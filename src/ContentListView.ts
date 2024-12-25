@@ -3,12 +3,16 @@ import Gio from "../@types/Gjs/Gio-2.0.js";
 import GObject from "../@types/Gjs/GObject-2.0.js";
 
 import { IListElem, ListElem } from "./ListElem.js";
+import { MainWindow } from "./MainWindow.js";
 
 export class ListView extends Gtk.ListView {
-  store: Gio.ListStore;
+  store: Gio.ListStore<IListElem>;
+  selectedIndex: number = 0;
+
   constructor(
     config: Gtk.ListView.ConstructorProperties = {},
-    contentArray: string[] = []
+    contentArray: string[] = [],
+    win: MainWindow
   ) {
     super(config);
 
@@ -35,13 +39,29 @@ export class ListView extends Gtk.ListView {
     }
 
     this.set_model(this.model);
+
+    // Create a Key Event Controller for the window
+    const key_controller = new Gtk.EventControllerKey();
+    this.add_controller(key_controller);
+
+    key_controller.connect(
+      "key-pressed",
+      (controller, keyval, keycode, state) => {
+        // right arrow
+        if (keyval === 65363) {
+          win.revealer.set_reveal_child(true);
+          return true;
+        }
+        return false;
+      }
+    );
   }
 
   /**
    * add element to the data model
    * @param elem
    */
-  add(elem: any) {
+  add(elem: IListElem) {
     (this.store as Gio.ListStore)?.append(elem);
   }
 
@@ -55,11 +75,12 @@ export class ListView extends Gtk.ListView {
     label.set_halign(Gtk.Align.START);
     label.set_hexpand(true);
     label.set_margin_start(10);
-    // const _switch = new Gtk.Switch();
-    // _switch.set_halign(Gtk.Align.END);
-    // _switch.set_margin_end(10);
+    const arrow = new Gtk.Label();
+    arrow.set_halign(Gtk.Align.END);
+    arrow.set_margin_end(10);
+    arrow.set_text(" > ");
     box.append(label);
-    // box.append(_switch);
+    box.append(arrow);
     item.set_child(box);
   }
 
@@ -84,8 +105,14 @@ export class ListView extends Gtk.ListView {
 
     item.set_child(box);
   }
-  selectionChanged(widget: Gtk.SelectionModel, ndx: number) {
-    log(`Selection changed : ${ndx}`);
+
+  selectionChanged(widget: Gtk.SelectionModel) {
+    const selection = widget.get_selection();
+    // the the first value in the GtkBitset, that contain the index of the selection in the data model
+    // as we use Gtk.SingleSelection, there can only be one ;-)
+    const ndx = selection.get_nth(0);
+    this.selectedIndex = ndx;
+    console.debug(`Selection changed : ${ndx} : ${widget.is_selected(ndx)}`);
   }
 }
 

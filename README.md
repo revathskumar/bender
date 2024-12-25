@@ -29,6 +29,7 @@ sudo apt install libgtk-4-1 libgtk-4-dev
 npm i
 npm run build:types
 npm run build:app
+echo -e "H e l l o\n A B C" | G_MESSAGES_DEBUG=all gjs -m dist/index.js
 ```
 
 ## Credits
