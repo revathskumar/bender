@@ -49,7 +49,7 @@ export class ListView extends Gtk.ListView {
       (controller, keyval, keycode, state) => {
         // right arrow
         if (keyval === 65363) {
-          win.revealer.set_reveal_child(true);
+          win.actionsSidebar.set_reveal_child(true);
           return true;
         }
         return false;
