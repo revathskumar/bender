@@ -3,10 +3,15 @@ import Gio from "../@types/Gjs/Gio-2.0.js";
 import GObject from "../@types/Gjs/GObject-2.0.js";
 import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
+import { ISearchBar, SearchBar } from "./SearchBar.js";
+import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
+import { IListElem } from "./ListElem.js";
 
 export class MainWindow extends Gtk.ApplicationWindow {
   listView: ListView;
   actionsSidebar: IActions;
+  searchBar: ISearchBar;
+  searchFilter: ISearchFilter;
 
   constructor(config: Gtk.ApplicationWindow.ConstructorProperties = {}) {
     const title = config?.title || "";
@@ -15,7 +20,13 @@ export class MainWindow extends Gtk.ApplicationWindow {
     // Removes title bar
     this.set_decorated(false);
 
+    const container = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
     const wrapper = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
+
+    this.searchFilter = new SearchFilter({}, this);
+
+    this.searchBar = new SearchBar({}, this);
+    container.append(this.searchBar);
 
     const right = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
     right.set_margin_bottom(15);
@@ -52,7 +63,8 @@ export class MainWindow extends Gtk.ApplicationWindow {
     wrapper.append(content);
     wrapper.append(this.actionsSidebar);
 
-    this.set_child(wrapper);
+    container.append(wrapper);
+    this.set_child(container);
 
     // Create a Key Event Controller for the window
     const key_controller = new Gtk.EventControllerKey();
@@ -87,7 +99,7 @@ export class MainWindow extends Gtk.ApplicationWindow {
     const content = cli.get_stdin();
 
     let str = "";
-    const bytes = content?.read_bytes(4096, null);
+    const bytes = content?.read_bytes(8192, null);
     content?.close(null);
     const data = bytes?.get_data();
     if (data) {
@@ -106,9 +118,11 @@ export class MainWindow extends Gtk.ApplicationWindow {
     button.connect("clicked", (btn) => {
       console.debug(`${btn.label} : ${this.listView.selectedIndex}`);
       if (this.listView.selectedIndex >= 0) {
-        const content = this.listView.store?.get_item(
-          this.listView.selectedIndex
-        )?.name as string;
+        const content = (
+          this.listView.model?.get_item(
+            this.listView.selectedIndex
+          ) as IListElem
+        )?.name;
 
         console.debug(content);
 

@@ -4,6 +4,7 @@ import GObject from "../@types/Gjs/GObject-2.0.js";
 
 import { IListElem, ListElem } from "./ListElem.js";
 import { MainWindow } from "./MainWindow.js";
+import { SearchFilter } from "./SearchFilter.js";
 
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
@@ -24,8 +25,14 @@ export class ListView extends Gtk.ListView {
 
     this.store = new Gio.ListStore({ item_type: ListElem.$gtype });
 
-    this.model = new Gtk.SingleSelection({
+    const filterModel = new Gtk.FilterListModel({
       model: this.store,
+      filter: win.searchFilter,
+      incremental: true,
+    });
+
+    this.model = new Gtk.SingleSelection({
+      model: filterModel,
     });
 
     this.model.connect("selection-changed", this.selectionChanged.bind(this));

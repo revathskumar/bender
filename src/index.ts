@@ -5,6 +5,7 @@ import GObject from "../@types/Gjs/GObject-2.0.js";
 import Gio from "../@types/Gjs/Gio-2.0.js";
 
 import { Window as MainWindow } from "./MainWindow";
+import GLib from "../@types/Gjs/GLib-2.0.js";
 
 class _Application extends Gtk.Application {
   constructor(
