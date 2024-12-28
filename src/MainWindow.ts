@@ -5,7 +5,7 @@ import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
-import { IListElem } from "./ListElem.js";
+import { ActionButton } from "./ActionButton.js";
 
 export class MainWindow extends Gtk.ApplicationWindow {
   listView: ListView;
@@ -34,11 +34,11 @@ export class MainWindow extends Gtk.ApplicationWindow {
     right.set_margin_end(15);
     right.set_margin_start(15);
 
-    right.append(this.createButton("UPPER CASE"));
-    right.append(this.createButton("lower case"));
-    right.append(this.createButton("Underscore"));
-    right.append(this.createButton("hypenate"));
-    right.append(this.createButton("enum"));
+    right.append(new ActionButton({ label: "UPPER CASE" }, this));
+    right.append(new ActionButton({ label: "lower case" }, this));
+    right.append(new ActionButton({ label: "Underscore" }, this));
+    right.append(new ActionButton({ label: "hypenate" }, this));
+    right.append(new ActionButton({ label: "enum" }, this));
 
     this.actionsSidebar = new ActionsSidebar({}, this);
     this.actionsSidebar.set_child(right);
@@ -110,48 +110,6 @@ export class MainWindow extends Gtk.ApplicationWindow {
     clipboardList.splice(clipboardList.length - 1, 1);
     console.debug(`${clipboardList.length} items found`);
     return clipboardList;
-  }
-
-  createButton(label: string) {
-    const button = new Gtk.Button({ label });
-
-    button.connect("clicked", (btn) => {
-      console.debug(`${btn.label} : ${this.listView.selectedIndex}`);
-      if (this.listView.selectedIndex >= 0) {
-        const content = (
-          this.listView.model?.get_item(
-            this.listView.selectedIndex
-          ) as IListElem
-        )?.name;
-
-        console.debug(content);
-
-        let transContent = "";
-        switch (btn.label.toLowerCase()) {
-          case "upper case":
-            transContent = content.toUpperCase();
-            break;
-          case "lower case":
-            transContent = content.toLowerCase();
-            break;
-          case "underscore":
-            transContent = content.replaceAll(" ", "_");
-            break;
-          case "hypenate":
-            transContent = content.replaceAll(" ", "-");
-            break;
-          case "enum":
-            transContent = content.replaceAll(" ", "_").toUpperCase();
-            break;
-
-          default:
-            break;
-        }
-        print(transContent);
-      }
-      this.close();
-    });
-    return button;
   }
 }
 
