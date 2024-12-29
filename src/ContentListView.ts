@@ -4,7 +4,6 @@ import GObject from "../@types/Gjs/GObject-2.0.js";
 
 import { IListElem, ListElem } from "./ListElem.js";
 import { MainWindow } from "./MainWindow.js";
-import { SearchFilter } from "./SearchFilter.js";
 
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
@@ -56,7 +55,7 @@ export class ListView extends Gtk.ListView {
       (controller, keyval, keycode, state) => {
         // right arrow
         if (keyval === 65363) {
-          win.actionsSidebar.set_reveal_child(true);
+          win.actionsSidebar.show();
           return true;
         }
         return false;
