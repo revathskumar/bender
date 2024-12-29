@@ -95,6 +95,14 @@ export class MainWindow extends Gtk.ApplicationWindow {
           this.listView.set_sensitive(true);
           return true;
         }
+
+        // down arrow
+        if (keyval === 65364 && !this.actionsSidebar.get_child_revealed()) {
+          // hack to bring focus to listview when window is presented
+          this.listView.grab_focus();
+          return true;
+        }
+
         return false; // Let other handlers process the event if it's not Escape
       }
     );
