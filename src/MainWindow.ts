@@ -6,12 +6,14 @@ import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
 import { ActionButton } from "./ActionButton.js";
+import { Footer } from "./Footer.js";
 
 export class MainWindow extends Gtk.ApplicationWindow {
   listView: ListView;
   actionsSidebar: IActions;
   searchBar: ISearchBar;
   searchFilter: ISearchFilter;
+  totalItemsCount: number = 0;
 
   constructor(config: Gtk.ApplicationWindow.ConstructorProperties = {}) {
     const title = config?.title || "";
@@ -50,6 +52,7 @@ export class MainWindow extends Gtk.ApplicationWindow {
     content.set_margin_start(15);
 
     const clipboardList = this.getInput();
+    this.totalItemsCount = clipboardList.length;
 
     this.listView = new ContentListView({}, clipboardList, this);
 
@@ -64,6 +67,9 @@ export class MainWindow extends Gtk.ApplicationWindow {
     wrapper.append(this.actionsSidebar);
 
     container.append(wrapper);
+    container.append(
+      new Footer({ orientation: Gtk.Orientation.HORIZONTAL }, this)
+    );
     this.set_child(container);
 
     // Create a Key Event Controller for the window
