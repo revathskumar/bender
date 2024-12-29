@@ -37,6 +37,9 @@ export class IActions extends Gtk.Revealer {
     actionsWrapper.append(new ActionButton({ label: "Underscore" }, this.win));
     actionsWrapper.append(new ActionButton({ label: "hypenate" }, this.win));
     actionsWrapper.append(new ActionButton({ label: "enum" }, this.win));
+    actionsWrapper.append(
+      new ActionButton({ label: "remove space" }, this.win)
+    );
     return actionsWrapper;
   }
 

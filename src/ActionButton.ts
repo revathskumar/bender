@@ -36,6 +36,9 @@ class IActionButton extends Gtk.Button {
         case "enum":
           transContent = content.replaceAll(" ", "_").toUpperCase();
           break;
+        case "remove space":
+          transContent = content.replaceAll(" ", "");
+          break;
 
         default:
           break;
