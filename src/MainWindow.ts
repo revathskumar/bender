@@ -30,20 +30,7 @@ export class MainWindow extends Gtk.ApplicationWindow {
     this.searchBar = new SearchBar({}, this);
     container.append(this.searchBar);
 
-    const right = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
-    right.set_margin_bottom(15);
-    right.set_margin_top(15);
-    right.set_margin_end(15);
-    right.set_margin_start(15);
-
-    right.append(new ActionButton({ label: "UPPER CASE" }, this));
-    right.append(new ActionButton({ label: "lower case" }, this));
-    right.append(new ActionButton({ label: "Underscore" }, this));
-    right.append(new ActionButton({ label: "hypenate" }, this));
-    right.append(new ActionButton({ label: "enum" }, this));
-
     this.actionsSidebar = new ActionsSidebar({}, this);
-    this.actionsSidebar.set_child(right);
 
     const content = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
     content.set_margin_bottom(15);
