@@ -121,6 +121,10 @@ export class ListView extends Gtk.ListView {
     this.selectedIndex = ndx;
     console.debug(`Selection changed : ${ndx} : ${widget.is_selected(ndx)}`);
   }
+
+  getSelectedContent() {
+    return (this.model?.get_item(this.selectedIndex) as IListElem)?.name;
+  }
 }
 
 export const ContentListView = GObject.registerClass(

@@ -15,11 +15,7 @@ class IActionButton extends Gtk.Button {
   handleOnClick(btn: Gtk.Button) {
     console.debug(`${btn.label} : ${this.win.listView.selectedIndex}`);
     if (this.win.listView.selectedIndex >= 0) {
-      const content = (
-        this.win.listView.model?.get_item(
-          this.win.listView.selectedIndex
-        ) as IListElem
-      )?.name;
+      const content = this.win.listView.getSelectedContent();
 
       console.debug(content);
 
