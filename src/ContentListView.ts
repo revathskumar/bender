@@ -8,6 +8,7 @@ import { MainWindow } from "./MainWindow.js";
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
   selectedIndex: number = 0;
+  win: MainWindow;
 
   constructor(
     config: Gtk.ListView.ConstructorProperties = {},
@@ -15,6 +16,8 @@ export class ListView extends Gtk.ListView {
     win: MainWindow
   ) {
     super(config);
+
+    this.win = win;
 
     this.factory = new Gtk.SignalListItemFactory();
     this.set_factory(this.factory);
@@ -50,17 +53,7 @@ export class ListView extends Gtk.ListView {
     const key_controller = new Gtk.EventControllerKey();
     this.add_controller(key_controller);
 
-    key_controller.connect(
-      "key-pressed",
-      (controller, keyval, keycode, state) => {
-        // right arrow
-        if (keyval === 65363) {
-          win.actionsSidebar.show();
-          return true;
-        }
-        return false;
-      }
-    );
+    key_controller.connect("key-pressed", this.#handleKeyPress.bind(this));
   }
 
   /**
@@ -123,6 +116,16 @@ export class ListView extends Gtk.ListView {
 
   getSelectedContent() {
     return (this.model?.get_item(this.selectedIndex) as IListElem)?.name;
+  }
+
+  #handleKeyPress(controller: Gtk.EventControllerKey, keyval: number) {
+    console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
+    // right arrow
+    if (keyval === 65363) {
+      this.win.actionsSidebar.show();
+      return true;
+    }
+    return false;
   }
 }
 
