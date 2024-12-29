@@ -2,7 +2,9 @@
   "compilerOptions": {
     "lib": ["ES2024", "DOM"],
     "target": "ES2024",
-    "module": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,

@@ -1,6 +1,6 @@
-import GObject from "../@types/Gjs/GObject-2.0";
-import Gtk from "../@types/Gjs/Gtk-4.0";
-import { MainWindow } from "./MainWindow";
+import GObject from "../@types/Gjs/GObject-2.0.js";
+import Gtk from "../@types/Gjs/Gtk-4.0.js";
+import { MainWindow } from "./MainWindow.js";
 
 export class IActions extends Gtk.Revealer {
   win: MainWindow;

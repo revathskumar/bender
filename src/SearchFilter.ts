@@ -1,7 +1,7 @@
-import GObject from "../@types/Gjs/GObject-2.0";
-import Gtk from "../@types/Gjs/Gtk-4.0";
-import { IListElem } from "./ListElem";
-import { MainWindow } from "./MainWindow";
+import GObject from "../@types/Gjs/GObject-2.0.js";
+import Gtk from "../@types/Gjs/Gtk-4.0.js";
+import { IListElem } from "./ListElem.js";
+import { MainWindow } from "./MainWindow.js";
 
 export class ISearchFilter extends Gtk.Filter {
   win: MainWindow;
