@@ -14,6 +14,17 @@ or
 echo -e 'hello \n 123' | gjs -m dist/index.js
 ```
 
+## Key bindings
+
+* `ESC` - close the window
+* `ENTER` - Apply the focused action (print the output to stdout & close the window)
+* `RIGHT ARROW` - Open the actions sidebar
+* `LEFT ARROW` - Close the actions sidebar
+* `any alphanumeric` - search & filter the list
+* `UP/DOWN ARROWS` -
+    * navigate through the list (when the actions sidebar is closed)
+    * navigate through available actions (when actions sidebar is open with `RIGHT ARROW`)
+
 ## Dev setup
 
 ### Install dependencies
