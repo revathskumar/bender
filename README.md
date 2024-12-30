@@ -2,6 +2,10 @@
 
 > Bending Text
 
+## Demo
+
+![demo](/images/demo.gif)
+
 ## Usage
 
 ```sh
