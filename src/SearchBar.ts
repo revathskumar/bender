@@ -36,17 +36,13 @@ export class ISearchBar extends Gtk.SearchBar {
     // Set search mode to off by default
     this.set_search_mode(false);
 
-    this.entry?.connect("activate", this.onSearch.bind(this));
-    this.entry?.connect("notify::text", (widget: Gtk.SearchEntry) => {
-      print(`notify text for : ${widget.get_text()}`);
-      this.searchText = widget.get_text();
-      this.win.searchFilter.changed(Gtk.FilterChange.DIFFERENT);
-    });
+    this.entry?.connect("notify::text", this.#handleTextEntry.bind(this));
   }
 
-  onSearch(widget: Gtk.SearchEntry) {
-    print(`Searching for : ${widget.get_text()}`);
+  #handleTextEntry(widget: Gtk.SearchEntry) {
+    console.debug(`notify text for : ${widget.get_text()}`);
     this.searchText = widget.get_text();
+    this.win.searchFilter.changed(Gtk.FilterChange.DIFFERENT);
   }
 }
 
