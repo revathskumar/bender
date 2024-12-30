@@ -19,7 +19,7 @@ class _Application extends Adw.Application {
     let win = this.active_window;
     if (!win) {
       win = new MainWindow({
-        title: "",
+        title: "Bender",
         default_width: 800,
         default_height: 800,
         application: this,
