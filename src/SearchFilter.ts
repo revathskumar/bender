@@ -1,21 +1,22 @@
-import GObject from "../@types/Gjs/GObject-2.0.js";
-import Gtk from "../@types/Gjs/Gtk-4.0.js";
+import Gtk from "gi://Gtk?version=4.0";
+import GObject from "gi://GObject";
 import { IListElem } from "./ListElem.js";
 import { MainWindow } from "./MainWindow.js";
 
 export class ISearchFilter extends Gtk.Filter {
   win: MainWindow;
-  constructor(config: Gtk.Filter.ConstructorProperties = {}, win: MainWindow) {
+  constructor(config: Partial<Gtk.Filter.ConstructorProps>, win: MainWindow) {
     super(config);
 
     this.win = win;
   }
 
-  vfunc_match(item: IListElem): boolean {
+  vfunc_match(item?: IListElem | null | undefined): boolean {
     let searchText = this.win.searchBar.searchText.toLowerCase();
-    // console.debug("🚀 ~ file: ContentListView.ts:32 ~ searchText:", searchText);
-    return item.name.toLowerCase().includes(searchText);
-    // return true;
+    if (item) {
+      return item?.name.toLowerCase().includes(searchText);
+    }
+    return false;
   }
 }
 

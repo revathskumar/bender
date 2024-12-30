@@ -1,12 +1,12 @@
-import GObject from "../@types/Gjs/GObject-2.0.js";
-import Gtk from "../@types/Gjs/Gtk-4.0.js";
+import Gtk from "gi://Gtk?version=4.0";
+import GObject from "gi://GObject";
 import { MainWindow } from "./MainWindow.js";
 import pkg from "../package.json" with { type: "json" }; // requries ts module option set to esnext/nodenext
 
 class IFooter extends Gtk.Box {
   win: MainWindow;
   summaryLabel: Gtk.Label;
-  constructor(config: Gtk.Box.ConstructorProperties = {}, win: MainWindow) {
+  constructor(config: Partial<Gtk.Box.ConstructorProps>, win: MainWindow) {
     super(config);
     this.win = win;
 

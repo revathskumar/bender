@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@girs/gjs", "@girs/adw-1"],
     "lib": ["ES2024", "DOM"],
     "target": "ES2024",
     "module": "NodeNext",

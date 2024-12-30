@@ -1,10 +1,10 @@
-import GObject from "../../@types/Gjs/GObject-2.0.js";
-import Gtk from "../../@types/Gjs/Gtk-4.0.js";
+import Gtk from "gi://Gtk?version=4.0";
+import GObject from "gi://GObject";
 import { ActionButton } from "../ActionButton.js";
 import { MainWindow } from "../MainWindow.js";
 
 class IToUpperCaseButton extends ActionButton {
-  constructor(config: Gtk.Button.ConstructorProperties = {}, win: MainWindow) {
+  constructor(config: Partial<Gtk.Button.ConstructorProps>, win: MainWindow) {
     super(config, win);
 
     this.set_label("UPPER CASE");

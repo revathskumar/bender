@@ -6,16 +6,17 @@
   "bin": "bin/bender",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:types": "ts-for-gir generate gtk4 Gtk-4.0 Polkit-1.0 -e gjs --useNamespace -t esm --fixConflicts --noCheck=false",
-    "build:app": "node esbuild.js",
-    "build": "npm run build:types && npm run build:app"
+    "check:types": "tsc --noEmit",
+    "build": "node esbuild.js"
   },
   "keywords": [],
   "author": "Revath S Kumar <rsk@revathskumar.com> (http://blog.revathskumar.com/)",
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@ts-for-gir/cli": "^3.0.0-beta.5",
+    "@girs/adw-1": "^1.7.0-4.0.0-beta.19",
+    "@girs/gjs": "^4.0.0-beta.19",
+    "@girs/gtk-4.0": "^4.16.3-4.0.0-beta.19",
     "esbuild": "^0.24.2",
     "eslint": "^9.17.0",
     "prettier": "^3.4.2",

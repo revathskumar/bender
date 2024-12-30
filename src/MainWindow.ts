@@ -1,20 +1,21 @@
-import Gtk from "../@types/Gjs/Gtk-4.0.js";
-import Gio from "../@types/Gjs/Gio-2.0.js";
-import GObject from "../@types/Gjs/GObject-2.0.js";
+import Adw from "@girs/adw-1";
+import Gio from "gi://Gio";
+import Gtk from "gi://Gtk?version=4.0";
+import GObject from "gi://GObject";
 import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
 import { Footer } from "./Footer.js";
 
-export class MainWindow extends Gtk.ApplicationWindow {
+export class MainWindow extends Adw.ApplicationWindow {
   listView: ListView;
   actionsSidebar: IActions;
   searchBar: ISearchBar;
   searchFilter: ISearchFilter;
   totalItemsCount: number = 0;
 
-  constructor(config: Gtk.ApplicationWindow.ConstructorProperties = {}) {
+  constructor(config: Partial<Adw.ApplicationWindow.ConstructorProps>) {
     const title = config?.title || "";
     super(config);
 
@@ -56,7 +57,7 @@ export class MainWindow extends Gtk.ApplicationWindow {
     container.append(
       new Footer({ orientation: Gtk.Orientation.HORIZONTAL }, this)
     );
-    this.set_child(container);
+    this.set_content(container);
 
     // Create a Key Event Controller for the window
     const key_controller = new Gtk.EventControllerKey();

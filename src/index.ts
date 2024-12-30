@@ -1,12 +1,10 @@
-import "../@types/Gjs/index.js";
-import { System } from "../@types/Gjs/Gjs.js";
-import Gtk from "../@types/Gjs/Gtk-4.0.js";
-import GObject from "../@types/Gjs/GObject-2.0.js";
-import Gio from "../@types/Gjs/Gio-2.0.js";
+import Gio from "gi://Gio";
+import Adw from "gi://Adw?version=1";
+import GObject from "gi://GObject";
 
 import { Window as MainWindow } from "./MainWindow.js";
 
-class _Application extends Gtk.Application {
+class _Application extends Adw.Application {
   constructor(
     constructProperties = {
       application_id: "com.revathskumar.bender",
@@ -42,10 +40,12 @@ const Application = GObject.registerClass(
 
 /** Run the main application */
 const main = () => {
+  console.debug("Adw.VERSION_S : ", Adw.VERSION_S);
   // The proper way to run a Gtk.Application or Gio.Application is take ARGV and
   // prepend the program name to it, and pass that to run()
   const app = new Application();
-  app.run([System.programInvocationName, ...ARGV]);
+  // app.run([System.programInvocationName, ...ARGV]);
+  app.run([imports.system.programInvocationName].concat(ARGV));
 };
 
 main();

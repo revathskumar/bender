@@ -1,5 +1,5 @@
-import GObject from "../@types/Gjs/GObject-2.0.js";
-import Gtk from "../@types/Gjs/Gtk-4.0.js";
+import Gtk from "gi://Gtk?version=4.0";
+import GObject from "gi://GObject";
 import { MainWindow } from "./MainWindow.js";
 
 export class ISearchBar extends Gtk.SearchBar {
@@ -7,7 +7,7 @@ export class ISearchBar extends Gtk.SearchBar {
   searchText: string = "";
   win: MainWindow;
   constructor(
-    config: Gtk.SearchBar.ConstructorProperties = {},
+    config: Partial<Gtk.SearchBar.ConstructorProps>,
     win: MainWindow
   ) {
     super(config);
