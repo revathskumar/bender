@@ -9,41 +9,23 @@ class IActionButton extends Gtk.Button {
 
     this.win = win;
 
-    this.connect("clicked", this.handleOnClick.bind(this));
+    this.set_margin_top(5);
+    this.set_margin_bottom(5);
+
+    this.connect(
+      "clicked",
+      this.#handleOnClick.bind(this, this.handleButtonAction)
+    );
   }
 
-  handleOnClick(btn: Gtk.Button) {
-    console.debug(`${btn.label} : ${this.win.listView.selectedIndex}`);
-    if (this.win.listView.selectedIndex >= 0) {
-      const content = this.win.listView.getSelectedContent();
+  handleButtonAction(content: string): string {
+    throw new Error("Not implemnted");
+  }
 
-      console.debug(content);
-
-      let transContent = "";
-      switch (btn.label.toLowerCase()) {
-        case "upper case":
-          transContent = content.toUpperCase();
-          break;
-        case "lower case":
-          transContent = content.toLowerCase();
-          break;
-        case "underscore":
-          transContent = content.replaceAll(" ", "_");
-          break;
-        case "hypenate":
-          transContent = content.replaceAll(" ", "-");
-          break;
-        case "enum":
-          transContent = content.replaceAll(" ", "_").toUpperCase();
-          break;
-        case "remove space":
-          transContent = content.replaceAll(" ", "");
-          break;
-
-        default:
-          break;
-      }
-      print(transContent);
+  #handleOnClick(btnAction: typeof this.handleButtonAction) {
+    const content = this.win.listView.getSelectedContent();
+    if (content) {
+      print(btnAction(content.trim()));
     }
     this.win.close();
   }
@@ -51,7 +33,7 @@ class IActionButton extends Gtk.Button {
 
 export const ActionButton = GObject.registerClass(
   {
-    GTypeName: "Button",
+    GTypeName: "ActionButton",
   },
   IActionButton
 );

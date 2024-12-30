@@ -5,7 +5,6 @@ import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
-import { ActionButton } from "./ActionButton.js";
 import { Footer } from "./Footer.js";
 
 export class MainWindow extends Gtk.ApplicationWindow {

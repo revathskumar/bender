@@ -115,7 +115,10 @@ export class ListView extends Gtk.ListView {
   }
 
   getSelectedContent() {
-    return (this.model?.get_item(this.selectedIndex) as IListElem)?.name;
+    if (this.selectedIndex >= 0) {
+      return (this.model?.get_item(this.selectedIndex) as IListElem)?.name;
+    }
+    return "";
   }
 
   #handleKeyPress(controller: Gtk.EventControllerKey, keyval: number) {
