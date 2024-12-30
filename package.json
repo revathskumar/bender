@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "type": "module",
+  "bin": "bin/bender",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:types": "ts-for-gir generate gtk4 Gtk-4.0 Polkit-1.0 -e gjs --useNamespace -t esm --fixConflicts --noCheck=false",
