@@ -7,6 +7,12 @@ import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
 import { Footer } from "./Footer.js";
+import {
+  DOWN_ARROW,
+  ESCAPE,
+  LEFT_ARROW,
+  RIGHT_ARROW,
+} from "./constants/keyval.js";
 
 export class MainWindow extends Adw.ApplicationWindow {
   listView: ListView;
@@ -67,26 +73,28 @@ export class MainWindow extends Adw.ApplicationWindow {
       "key-pressed",
       (controller, keyval, keycode, state) => {
         console.debug(`window key pressed : ${keyval}, ${keycode}`);
-        // Check if the key pressed is Escape (keyval for Escape is 65307)
-        if (keyval === 65307 && !this.actionsSidebar.get_child_revealed()) {
-          this.close(); // Close the window
-          return true; // Indicate the event is handled
+        if (!this.actionsSidebar.get_child_revealed()) {
+          if (keyval === ESCAPE) {
+            this.close(); // Close the window
+            return true; // Indicate the event is handled
+          }
+          if (keyval === DOWN_ARROW) {
+            // hack to bring focus to listview when window is presented
+            this.listView.grab_focus();
+            return true;
+          }
         }
-        if (keyval === 65363) {
+
+        if (keyval === RIGHT_ARROW) {
           this.actionsSidebar.show();
           return true;
         }
-        // left arrow
-        if (keyval === 65361 && this.actionsSidebar.child_revealed) {
+        if (
+          [LEFT_ARROW, ESCAPE].includes(keyval) &&
+          this.actionsSidebar.child_revealed
+        ) {
           this.actionsSidebar.hide();
           this.listView.set_sensitive(true);
-          return true;
-        }
-
-        // down arrow
-        if (keyval === 65364 && !this.actionsSidebar.get_child_revealed()) {
-          // hack to bring focus to listview when window is presented
-          this.listView.grab_focus();
           return true;
         }
 

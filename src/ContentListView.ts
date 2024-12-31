@@ -4,6 +4,7 @@ import GObject from "gi://GObject";
 
 import { IListElem, ListElem } from "./ListElem.js";
 import { MainWindow } from "./MainWindow.js";
+import { RIGHT_ARROW } from "./constants/keyval.js";
 
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
@@ -124,7 +125,7 @@ export class ListView extends Gtk.ListView {
   #handleKeyPress(controller: Gtk.EventControllerKey, keyval: number) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
     // right arrow
-    if (keyval === 65363) {
+    if (keyval === RIGHT_ARROW) {
       this.win.actionsSidebar.show();
       return true;
     }
