@@ -4,7 +4,7 @@
 
 ## Demo
 
-![demo](/images/demo.gif)
+![demo](/images/adwaita-demo.gif)
 
 ## Usage
 
@@ -12,7 +12,7 @@
 greenclip print | gjs -m dist/index.js
 ```
 
-or 
+or
 
 ```sh
 echo -e 'hello \n 123' | gjs -m dist/index.js
