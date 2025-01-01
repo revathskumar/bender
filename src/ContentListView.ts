@@ -63,6 +63,8 @@ export class ListView extends Gtk.ListView {
    */
   factorySetup(widget: Gtk.ListView, item: Gtk.ListItem) {
     const box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
+
+    item.set_child(box);
     const label = new Gtk.Label();
     label.set_halign(Gtk.Align.START);
     label.set_hexpand(true);
@@ -73,7 +75,6 @@ export class ListView extends Gtk.ListView {
     arrow.set_text(" > ");
     box.append(label);
     box.append(arrow);
-    item.set_child(box);
   }
 
   /**
