@@ -44,7 +44,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     content.set_margin_end(15);
     content.set_margin_start(15);
 
-    const clipboardList = this.getInput();
+    const clipboardList = this.#getInput();
     this.totalItemsCount = clipboardList.length;
 
     this.listView = new ContentListView({}, clipboardList, this);
@@ -99,11 +99,11 @@ export class MainWindow extends Adw.ApplicationWindow {
         }
 
         return false; // Let other handlers process the event if it's not Escape
-      }
+      },
     );
   }
 
-  getInput() {
+  #getInput() {
     const cli = new Gio.ApplicationCommandLine();
     const content = cli.get_stdin();
 
