@@ -1,18 +1,21 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import { IListElem } from "./ListElem.js";
-import { MainWindow } from "./MainWindow.js";
+import { ISearchBar } from "./SearchBar.js";
 
 export class ISearchFilter extends Gtk.Filter {
-  win: MainWindow;
-  constructor(config: Partial<Gtk.Filter.ConstructorProps>, win: MainWindow) {
+  searchBar: ISearchBar;
+  constructor(
+    config: Partial<Gtk.Filter.ConstructorProps> = {},
+    searchBar: ISearchBar,
+  ) {
     super(config);
 
-    this.win = win;
+    this.searchBar = searchBar;
   }
 
   vfunc_match(item?: IListElem | null | undefined): boolean {
-    let searchText = this.win.searchBar.searchText.toLowerCase();
+    let searchText = this.searchBar.getSearchText();
     if (item) {
       return item?.name.toLowerCase().includes(searchText);
     }
@@ -24,5 +27,5 @@ export const SearchFilter = GObject.registerClass(
   {
     GTypeName: "Filter",
   },
-  ISearchFilter
+  ISearchFilter,
 );

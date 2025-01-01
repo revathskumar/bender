@@ -31,10 +31,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     const container = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
     const wrapper = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
-    this.searchFilter = new SearchFilter({}, this);
-
-    this.searchBar = new SearchBar({}, this);
+    this.searchBar = this.#buildSearchBar();
     container.append(this.searchBar);
+    this.searchFilter = new SearchFilter({}, this.searchBar);
 
     this.actionsSidebar = new ActionsSidebar({}, this);
 
@@ -119,6 +118,15 @@ export class MainWindow extends Adw.ApplicationWindow {
     clipboardList.splice(clipboardList.length - 1, 1);
     console.debug(`${clipboardList.length} items found`);
     return clipboardList;
+  }
+
+  #buildSearchBar() {
+    const searchBar = new SearchBar();
+    searchBar.setCapture(this);
+    searchBar.setCallbackForTextEntry(() => {
+      this.searchFilter.changed(Gtk.FilterChange.DIFFERENT);
+    });
+    return searchBar;
   }
 }
 
