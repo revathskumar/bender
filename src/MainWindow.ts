@@ -36,7 +36,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     container.append(this.searchBar);
     this.searchFilter = new SearchFilter({}, this.searchBar);
 
-    this.actionsSidebar = new ActionsSidebar({}, this);
+    this.actionsSidebar = new ActionsSidebar(this);
 
     const content = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
     content.set_margin_bottom(15);

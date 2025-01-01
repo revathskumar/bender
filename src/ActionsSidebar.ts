@@ -10,8 +10,8 @@ import { MainWindow } from "./MainWindow.js";
 
 export class IActions extends Gtk.Revealer {
   win: MainWindow;
-  constructor(config: Partial<Gtk.Revealer.ConstructorProps>, win: MainWindow) {
-    super(config);
+  constructor(win: MainWindow) {
+    super();
     this.win = win;
 
     this.set_halign(Gtk.Align.END);
@@ -34,12 +34,12 @@ export class IActions extends Gtk.Revealer {
     actionsWrapper.set_margin_end(15);
     actionsWrapper.set_margin_start(15);
 
-    actionsWrapper.append(new ToUpperCaseButton({}, this.win));
-    actionsWrapper.append(new ToLowerCaseButton({}, this.win));
-    actionsWrapper.append(new ToUnderscoreButton({}, this.win));
-    actionsWrapper.append(new ToHypenateButton({}, this.win));
-    actionsWrapper.append(new ToEnumButton({}, this.win));
-    actionsWrapper.append(new ToRemoveSpaceButton({}, this.win));
+    actionsWrapper.append(new ToUpperCaseButton(this.win));
+    actionsWrapper.append(new ToLowerCaseButton(this.win));
+    actionsWrapper.append(new ToUnderscoreButton(this.win));
+    actionsWrapper.append(new ToHypenateButton(this.win));
+    actionsWrapper.append(new ToEnumButton(this.win));
+    actionsWrapper.append(new ToRemoveSpaceButton(this.win));
     return actionsWrapper;
   }
 
@@ -74,5 +74,5 @@ export const ActionsSidebar = GObject.registerClass(
   {
     GTypeName: "Revealer",
   },
-  IActions
+  IActions,
 );

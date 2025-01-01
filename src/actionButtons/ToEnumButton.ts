@@ -4,8 +4,8 @@ import { ActionButton } from "../ActionButton.js";
 import { MainWindow } from "../MainWindow.js";
 
 class IToEnumButton extends ActionButton {
-  constructor(config: Partial<Gtk.Button.ConstructorProps>, win: MainWindow) {
-    super(config, win);
+  constructor(win: MainWindow) {
+    super(win);
 
     this.set_label("enum");
   }
@@ -17,5 +17,5 @@ export const ToEnumButton = GObject.registerClass(
   {
     GTypeName: "ToEnumButton",
   },
-  IToEnumButton
+  IToEnumButton,
 );

@@ -4,8 +4,8 @@ import { MainWindow } from "./MainWindow.js";
 
 class IActionButton extends Gtk.Button {
   win: MainWindow;
-  constructor(config: Partial<Gtk.Button.ConstructorProps>, win: MainWindow) {
-    super(config);
+  constructor(win: MainWindow) {
+    super();
 
     this.win = win;
 
@@ -14,7 +14,7 @@ class IActionButton extends Gtk.Button {
 
     this.connect(
       "clicked",
-      this.#handleOnClick.bind(this, this.handleButtonAction)
+      this.#handleOnClick.bind(this, this.handleButtonAction),
     );
   }
 
@@ -35,5 +35,5 @@ export const ActionButton = GObject.registerClass(
   {
     GTypeName: "ActionButton",
   },
-  IActionButton
+  IActionButton,
 );
