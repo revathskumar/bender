@@ -1,0 +1,27 @@
+app-id: com.revathskumar.bender
+runtime: org.gnome.Platform
+runtime-version: "47"
+sdk: org.gnome.Sdk
+command: com.revathskumar.bender
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+  - --filesystem=home:ro
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/doc
+  - /share/man
+  - "*.a"
+  - "*.la"
+
+modules:
+  - name: bender
+    buildsystem: meson
+    sources:
+      - type: dir
+        path: .

@@ -55,6 +55,15 @@ meson compile -C builddir
 sudo meson install -C builddir
 ```
 
+and run it by `echo -e "Hello\nBender" | com.revathskumar.bender`
+
+### Using flatpak
+
+```sh
+flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install builddir com.revathskumar.bender.yaml
+echo -e "Hello\nBender" | flatpak run com.revathskumar.bender
+```
+
 ## Credits
 
 Based on [gjsify/example-gtk4](https://github.com/gjsify/example-gtk4) by Pascal Garber
