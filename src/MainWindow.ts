@@ -6,7 +6,7 @@ import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
-import { Footer } from "./Footer.js";
+import { Footer, IFooter } from "./Footer.js";
 import {
   DOWN_ARROW,
   ESCAPE,
@@ -19,6 +19,7 @@ export class MainWindow extends Adw.ApplicationWindow {
   actionsSidebar: IActions;
   searchBar: ISearchBar;
   searchFilter: ISearchFilter;
+  footer: IFooter;
   totalItemsCount: number = 0;
 
   constructor(config: Partial<Adw.ApplicationWindow.ConstructorProps>) {
@@ -47,6 +48,7 @@ export class MainWindow extends Adw.ApplicationWindow {
     this.totalItemsCount = clipboardList.length;
 
     this.listView = new ContentListView({}, clipboardList, this);
+    this.listView.setItemsChangedCallback(this.#handleItemsChanged.bind(this));
 
     const sw = new Gtk.ScrolledWindow();
     sw.set_hexpand(true);
@@ -59,9 +61,8 @@ export class MainWindow extends Adw.ApplicationWindow {
     wrapper.append(this.actionsSidebar);
 
     container.append(wrapper);
-    container.append(
-      new Footer({ orientation: Gtk.Orientation.HORIZONTAL }, this)
-    );
+    this.footer = new Footer();
+    container.append(this.footer);
     this.set_content(container);
 
     // Create a Key Event Controller for the window
@@ -128,11 +129,15 @@ export class MainWindow extends Adw.ApplicationWindow {
     });
     return searchBar;
   }
+
+  #handleItemsChanged(count: number) {
+    this.footer.updateSummaryLabel(count, this.totalItemsCount);
+  }
 }
 
 export const Window = GObject.registerClass(
   {
     GTypeName: "Window",
   },
-  MainWindow
+  MainWindow,
 );

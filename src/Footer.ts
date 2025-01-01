@@ -1,32 +1,34 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
-import { MainWindow } from "./MainWindow.js";
 import pkg from "../package.json" with { type: "json" }; // requries ts module option set to esnext/nodenext
 
-class IFooter extends Gtk.Box {
-  win: MainWindow;
-  summaryLabel: Gtk.Label;
-  constructor(config: Partial<Gtk.Box.ConstructorProps>, win: MainWindow) {
+export class IFooter extends Gtk.Box {
+  #summaryLabel: Gtk.Label;
+  constructor(config: Partial<Gtk.Box.ConstructorProps> = {}) {
     super(config);
-    this.win = win;
+
+    this.set_orientation(Gtk.Orientation.HORIZONTAL);
 
     this.set_margin_bottom(15);
     this.set_margin_end(15);
     this.set_margin_start(15);
     this.set_halign(Gtk.Align.FILL);
 
-    this.summaryLabel = this.renderSummary();
-    this.append(this.summaryLabel);
-    this.renderVersion();
-
-    this.win.listView.model.connect("items-changed", () => {
-      const count = this.win.listView.model.get_n_items();
-
-      this.summaryLabel.label = `Showing items ${count} of ${this.win.totalItemsCount}`;
-    });
+    this.#summaryLabel = this.#renderSummary();
+    this.append(this.#summaryLabel);
+    this.#renderVersion();
   }
 
-  renderSummary() {
+  updateSummaryLabel(count: number, totalCount: number) {
+    const labelText = `Showing items ${count} of ${totalCount}`;
+    console.debug(
+      "🚀 ~ file: Footer.ts:24 ~ updateSummaryLabel ~ labelText:",
+      labelText,
+    );
+    this.#summaryLabel.set_label(labelText);
+  }
+
+  #renderSummary() {
     const summaryLabel = new Gtk.Label({
       label: ``,
     });
@@ -36,7 +38,7 @@ class IFooter extends Gtk.Box {
     return summaryLabel;
   }
 
-  renderVersion() {
+  #renderVersion() {
     const vLabel = new Gtk.Label({
       label: `${pkg.version}`,
     });
@@ -50,5 +52,5 @@ export const Footer = GObject.registerClass(
   {
     GTypeName: "Box",
   },
-  IFooter
+  IFooter,
 );

@@ -14,7 +14,7 @@ export class ListView extends Gtk.ListView {
   constructor(
     config: Partial<Gtk.ListView.ConstructorProps>,
     contentArray: string[] = [],
-    win: MainWindow
+    win: MainWindow,
   ) {
     super(config);
 
@@ -122,6 +122,24 @@ export class ListView extends Gtk.ListView {
     return "";
   }
 
+  setItemsChangedCallback(callback: (count: number) => void) {
+    this.model.connect(
+      "items-changed",
+      this.#handleItemsChanged.bind(this, callback),
+    );
+  }
+
+  #handleItemsChanged(callback: (count: number) => void) {
+    const count = this.model.get_n_items();
+    console.debug(
+      "🚀 ~ file: ContentListView.ts:135 ~ handleItemsChanged ~ count:",
+      count,
+    );
+    if (typeof callback === "function") {
+      callback(count);
+    }
+  }
+
   #handleKeyPress(controller: Gtk.EventControllerKey, keyval: number) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
     // right arrow
@@ -138,5 +156,5 @@ export const ContentListView = GObject.registerClass(
     GTypeName: "ListViewBase",
     Implements: [Gio.ListModel],
   },
-  ListView
+  ListView,
 );
