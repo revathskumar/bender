@@ -3,22 +3,16 @@ import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 
 import { IListElem, ListElem } from "./ListElem.js";
-import { MainWindow } from "./MainWindow.js";
 import { RIGHT_ARROW } from "./constants/keyval.js";
+import { ISearchFilter } from "./SearchFilter.js";
 
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
-  selectedIndex: number = 0;
-  win: MainWindow;
+  #selectedIndex: number = 0;
+  #keyController: Gtk.EventControllerKey;
 
-  constructor(
-    config: Partial<Gtk.ListView.ConstructorProps>,
-    contentArray: string[] = [],
-    win: MainWindow,
-  ) {
-    super(config);
-
-    this.win = win;
+  constructor(contentArray: string[] = [], searchFilter: ISearchFilter) {
+    super();
 
     this.factory = new Gtk.SignalListItemFactory();
     this.set_factory(this.factory);
@@ -30,7 +24,7 @@ export class ListView extends Gtk.ListView {
 
     const filterModel = new Gtk.FilterListModel({
       model: this.store,
-      filter: win.searchFilter,
+      filter: searchFilter,
       incremental: true,
     });
 
@@ -51,10 +45,8 @@ export class ListView extends Gtk.ListView {
     this.set_model(this.model);
 
     // Create a Key Event Controller for the window
-    const key_controller = new Gtk.EventControllerKey();
-    this.add_controller(key_controller);
-
-    key_controller.connect("key-pressed", this.#handleKeyPress.bind(this));
+    this.#keyController = new Gtk.EventControllerKey();
+    this.add_controller(this.#keyController);
   }
 
   /**
@@ -111,13 +103,13 @@ export class ListView extends Gtk.ListView {
     // the the first value in the GtkBitset, that contain the index of the selection in the data model
     // as we use Gtk.SingleSelection, there can only be one ;-)
     const ndx = selection.get_nth(0);
-    this.selectedIndex = ndx;
+    this.#selectedIndex = ndx;
     console.debug(`Selection changed : ${ndx} : ${widget.is_selected(ndx)}`);
   }
 
   getSelectedContent() {
-    if (this.selectedIndex >= 0) {
-      return (this.model?.get_item(this.selectedIndex) as IListElem)?.name;
+    if (this.#selectedIndex >= 0) {
+      return (this.model?.get_item(this.#selectedIndex) as IListElem)?.name;
     }
     return "";
   }
@@ -126,6 +118,13 @@ export class ListView extends Gtk.ListView {
     this.model.connect(
       "items-changed",
       this.#handleItemsChanged.bind(this, callback),
+    );
+  }
+
+  setHandleKeyPress(callback: () => void) {
+    this.#keyController.connect(
+      "key-pressed",
+      this.#handleKeyPress.bind(this, callback),
     );
   }
 
@@ -140,11 +139,14 @@ export class ListView extends Gtk.ListView {
     }
   }
 
-  #handleKeyPress(controller: Gtk.EventControllerKey, keyval: number) {
+  #handleKeyPress(
+    callback: () => void,
+    controller: Gtk.EventControllerKey,
+    keyval: number,
+  ) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
-    // right arrow
-    if (keyval === RIGHT_ARROW) {
-      this.win.actionsSidebar.show();
+    if (keyval === RIGHT_ARROW && typeof callback === "function") {
+      callback();
       return true;
     }
     return false;

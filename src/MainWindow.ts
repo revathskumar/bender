@@ -47,8 +47,9 @@ export class MainWindow extends Adw.ApplicationWindow {
     const clipboardList = this.#getInput();
     this.totalItemsCount = clipboardList.length;
 
-    this.listView = new ContentListView({}, clipboardList, this);
+    this.listView = new ContentListView(clipboardList, this.searchFilter);
     this.listView.setItemsChangedCallback(this.#handleItemsChanged.bind(this));
+    this.listView.setHandleKeyPress(this.#handleKeyPress.bind(this));
 
     const sw = new Gtk.ScrolledWindow();
     sw.set_hexpand(true);
@@ -132,6 +133,10 @@ export class MainWindow extends Adw.ApplicationWindow {
 
   #handleItemsChanged(count: number) {
     this.footer.updateSummaryLabel(count, this.totalItemsCount);
+  }
+
+  #handleKeyPress() {
+    this.actionsSidebar.show();
   }
 }
 
