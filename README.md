@@ -46,6 +46,15 @@ npm run build
 echo -e "H e l l o\n A B C" | G_MESSAGES_DEBUG=all gjs -m dist/index.js
 ```
 
+## Build & Install
+
+```sh
+npm run build
+meson setup builddir
+meson compile -C builddir
+sudo meson install -C builddir
+```
+
 ## Credits
 
 Based on [gjsify/example-gtk4](https://github.com/gjsify/example-gtk4) by Pascal Garber

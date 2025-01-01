@@ -9,7 +9,7 @@ class _Application extends Adw.Application {
     constructProperties = {
       application_id: "com.revathskumar.bender",
       flags: Gio.ApplicationFlags.FLAGS_NONE,
-    }
+    },
   ) {
     super(constructProperties);
   }
@@ -35,11 +35,11 @@ const Application = GObject.registerClass(
   {
     GTypeName: "Application",
   },
-  _Application
+  _Application,
 );
 
 /** Run the main application */
-const main = () => {
+export const main = () => {
   console.debug("Adw.VERSION_S : ", Adw.VERSION_S);
   // The proper way to run a Gtk.Application or Gio.Application is take ARGV and
   // prepend the program name to it, and pass that to run()
@@ -47,5 +47,4 @@ const main = () => {
   // app.run([System.programInvocationName, ...ARGV]);
   app.run([imports.system.programInvocationName].concat(ARGV));
 };
-
-main();
+export default main;

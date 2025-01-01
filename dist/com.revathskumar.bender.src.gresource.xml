@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/com/revathskumar/bender/js">
+		<file>index.js</file>
+	</gresource>
+</gresources>

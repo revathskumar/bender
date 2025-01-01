@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+  <id>com.revathskumar.bender</id>
+
+  <name>Bender</name>
+  <summary>Text Manipulator</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+
+  <description>
+    <p>
+      Text Manipulator
+    </p>
+  </description>
+
+  <icon type="stock">bender</icon>
+
+  <categories>
+    <category>Utility</category>
+    <category>TextTools</category>
+  </categories>
+
+  <provides>
+    <binary>com.revathskumar.bender</binary>
+  </provides>
+</component>
