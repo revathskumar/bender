@@ -3,3 +3,5 @@ dist/index.js
 @types/
 builddir/
 .flatpak-builder/
+repo/
+run/

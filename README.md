@@ -9,13 +9,13 @@
 ## Usage
 
 ```sh
-greenclip print | gjs -m dist/index.js
+greenclip print |  gjs -m "dist/main.js"
 ```
 
 or
 
 ```sh
-echo -e 'hello \n 123' | gjs -m dist/index.js
+echo -e 'hello \n 123' |  gjs -m "dist/main.js"
 ```
 
 ## Key bindings
@@ -35,6 +35,7 @@ echo -e 'hello \n 123' | gjs -m dist/index.js
 
 * libgtk4
 * gjs - 1.74.2
+* meson - 1.0.1
 
 ```sh
 sudo apt install libgtk-4-1 libgtk-4-dev
@@ -43,10 +44,20 @@ sudo apt install libgtk-4-1 libgtk-4-dev
 ```sh
 npm i
 npm run build
-echo -e "H e l l o\n A B C" | G_MESSAGES_DEBUG=all gjs -m dist/index.js
+echo -e "Hello\nBender" | G_MESSAGES_DEBUG=all ./bin/bender
 ```
 
 ## Build & Install
+
+### Dev build
+
+```sh
+npm run build
+meson setup --prefix=***/path/to/bender/run/ builddir/
+meson compile -C builddir/
+meson install -C builddir/
+echo -e "Hello\nBender" | ./run/bin/com.revathskumar.bender
+```
 
 ```sh
 npm run build
