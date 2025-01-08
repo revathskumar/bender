@@ -59,11 +59,12 @@ use pipe(`|`) to use mulitple actions
 ### Install dependencies
 
 * libgtk4
+* libadwaita
 * gjs - 1.74.2
 * meson - 1.0.1
 
 ```sh
-sudo apt install libgtk-4-1 libgtk-4-dev
+sudo apt install libgtk-4-1 libgtk-4-dev libadwaita-1-dev
 ```
 
 ```sh
