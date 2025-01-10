@@ -11,8 +11,11 @@ export class ListView extends Gtk.ListView {
   #selectedIndex: number = 0;
   #keyController: Gtk.EventControllerKey;
 
-  constructor(contentArray: string[] = [], searchFilter: ISearchFilter) {
-    super();
+  constructor(
+    config: Partial<Gtk.ListView.ConstructorProps> = {},
+    searchFilter: ISearchFilter,
+  ) {
+    super(config);
 
     this.factory = new Gtk.SignalListItemFactory();
     this.set_factory(this.factory);
@@ -37,16 +40,18 @@ export class ListView extends Gtk.ListView {
     this.set_valign(Gtk.Align.FILL);
     this.set_halign(Gtk.Align.FILL);
 
-    for (let index = 0; index < contentArray.length; index++) {
-      const element = contentArray[index];
-      this.add(new ListElem(element));
-    }
-
     this.set_model(this.model);
 
     // Create a Key Event Controller for the window
     this.#keyController = new Gtk.EventControllerKey();
     this.add_controller(this.#keyController);
+  }
+
+  addItems(contentArray: string[] = []) {
+    for (let index = 0; index < contentArray.length; index++) {
+      const element = contentArray[index];
+      this.add(new ListElem(element));
+    }
   }
 
   /**

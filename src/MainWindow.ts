@@ -2,6 +2,8 @@ import Adw from "@girs/adw-1";
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
+import GLib from "gi://GLib";
+import Gdk from "gi://Gdk";
 
 import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
@@ -18,6 +20,7 @@ import Configuration from "./Configuration.js";
 
 export class MainWindow extends Adw.ApplicationWindow {
   listView: ListView;
+  sw: Gtk.ScrolledWindow;
   actionsSidebar: IActions | undefined;
   wrapper: Gtk.Box;
   searchBar: ISearchBar;
@@ -45,19 +48,18 @@ export class MainWindow extends Adw.ApplicationWindow {
     content.set_margin_end(15);
     content.set_margin_start(15);
 
-    const clipboardList = this.#getInput();
-    this.totalItemsCount = clipboardList.length;
+    this.#getInput();
 
-    this.listView = new ContentListView(clipboardList, this.searchFilter);
+    this.listView = new ContentListView({}, this.searchFilter);
     this.listView.setItemsChangedCallback(this.#handleItemsChanged.bind(this));
     this.listView.setHandleKeyPress(this.#handleKeyPress.bind(this));
 
-    const sw = new Gtk.ScrolledWindow();
-    sw.set_hexpand(true);
-    sw.set_vexpand(true);
-    sw.set_child(this.listView);
+    this.sw = new Gtk.ScrolledWindow();
+    this.sw.set_hexpand(true);
+    this.sw.set_vexpand(true);
+    this.sw.set_child(this.listView);
 
-    content.append(sw);
+    content.append(this.sw);
 
     this.wrapper.append(content);
 
@@ -122,20 +124,45 @@ export class MainWindow extends Adw.ApplicationWindow {
 
   #getInput() {
     const cli = new Gio.ApplicationCommandLine();
-    const content = cli.get_stdin();
+    const inputStream = cli.get_stdin();
 
-    let str = "";
-    const bytes = content?.read_bytes(8192, null);
-    content?.close(null);
-    const data = bytes?.get_data();
-    if (data) {
-      str = new TextDecoder().decode(data);
+    if (inputStream) {
+      const outputStream = Gio.MemoryOutputStream.new_resizable();
+
+      outputStream.splice_async(
+        inputStream,
+        Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+          Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+        GLib.PRIORITY_DEFAULT,
+        null,
+        (outputStream, result) => {
+          let data;
+          let str = "";
+          let bytes;
+
+          try {
+            outputStream?.splice_finish(result);
+            bytes = outputStream?.steal_as_bytes();
+          } catch (err) {
+            console.debug(err);
+            // return;
+          }
+
+          data = bytes?.get_data();
+          if (data) {
+            str = new TextDecoder("utf-8").decode(data);
+          }
+          console.debug("body:", str);
+
+          let clipboardList = str.split("\n");
+          clipboardList.splice(clipboardList.length - 1, 1);
+          console.debug(`${clipboardList.length} items found`);
+
+          this.totalItemsCount = clipboardList.length;
+          this.listView.addItems(clipboardList);
+        },
+      );
     }
-
-    let clipboardList = str.split("\n");
-    clipboardList.splice(clipboardList.length - 1, 1);
-    console.debug(`${clipboardList.length} items found`);
-    return clipboardList;
   }
 
   #buildSearchBar() {
