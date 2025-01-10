@@ -120,6 +120,10 @@ export class ListView extends Gtk.ListView {
     return "";
   }
 
+  getContent(index: number) {
+    return (this.model?.get_item(index) as IListElem)?.name || "";
+  }
+
   setItemsChangedCallback(callback: (count: number) => void) {
     this.model.connect(
       "items-changed",

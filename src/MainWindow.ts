@@ -77,7 +77,18 @@ export class MainWindow extends Adw.ApplicationWindow {
     key_controller.connect(
       "key-pressed",
       (controller, keyval, keycode, state) => {
-        console.debug(`window key pressed : ${keyval}, ${keycode}`);
+        console.debug(
+          `window key pressed : ${keyval}, ${keycode}, ${state}, ${Gdk.ModifierType.CONTROL_MASK}`,
+        );
+        if (state === Gdk.ModifierType.CONTROL_MASK) {
+          const index = keyval - 49;
+          if (index >= 0 && index <= 8) {
+            const content = this.listView.getContent(index);
+            print(content);
+            this.close();
+          }
+          return true;
+        }
         if (!this.actionsSidebar?.get_child_revealed()) {
           if (keyval === ESCAPE) {
             this.close(); // Close the window
