@@ -99,7 +99,8 @@ export class ListView extends Gtk.ListView {
     // const _switch = label?.get_next_sibling() as Gtk.Switch;
     // Update Gtk.Label with data from model item
     // log(`facrotyBind : ${data.name}`);
-    label?.set_text(data.name || "");
+    label?.set_text(data.label || "");
+    label?.set_tooltip_text(data.name || "");
 
     item.set_child(box);
   }
