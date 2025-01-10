@@ -1,7 +1,7 @@
 # Define our project
 project(
 	'bender',
-	version: '1.1.0',
+	version: '1.2.0',
 	license: ['MIT'],
 	meson_version: '>= 1.0.1'
 )
