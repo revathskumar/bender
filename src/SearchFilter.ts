@@ -17,7 +17,7 @@ export class ISearchFilter extends Gtk.Filter {
   vfunc_match(item?: IListElem | null | undefined): boolean {
     let searchText = this.searchBar.getSearchText();
     if (item) {
-      return item?.name.toLowerCase().includes(searchText);
+      return item?.name.normalize("NFKD").toLowerCase().includes(searchText);
     }
     return false;
   }
