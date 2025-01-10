@@ -18,6 +18,31 @@ or
 echo -e 'hello \n 123' |  gjs -m "dist/main.js"
 ```
 
+## Configuration
+
+Copy [config.yaml](/config.yaml) to `~/.config/bender/config.yaml` (`$XDG_CONFIG_HOME/bender/config.yaml`)
+
+Available actions:
+
+* replace "<search_val>" "<replace_val>"
+* uppercase
+* lowercase
+
+Add new entry for `actions`
+
+```yaml
+  - label: remove space
+    action: replace " " ""
+```
+
+use pipe(`|`) to use mulitple actions
+
+
+```yaml
+  - label: enum
+    action: replace " " "_" | uppercase
+```
+
 ## Key bindings
 
 * `ESC` - close the window
@@ -34,11 +59,12 @@ echo -e 'hello \n 123' |  gjs -m "dist/main.js"
 ### Install dependencies
 
 * libgtk4
+* libadwaita
 * gjs - 1.74.2
 * meson - 1.0.1
 
 ```sh
-sudo apt install libgtk-4-1 libgtk-4-dev
+sudo apt install libgtk-4-1 libgtk-4-dev libadwaita-1-dev
 ```
 
 ```sh

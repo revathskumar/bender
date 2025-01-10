@@ -1,0 +1,14 @@
+version: 1.0
+actions:
+  - label: UPPER CASE
+    action: uppercase
+  - label: lower case
+    action: lowercase
+  - label: Underscore
+    action: replace ' ' '_'
+  - label: "hypenate (dash/-)"
+    action: 'replace " " "-"'
+  - label: "remove space"
+    action: 'replace " " ""'
+  - label: "enum"
+    action: 'replace " " "_" | uppercase'

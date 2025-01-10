@@ -1,22 +1,18 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
-import { ToEnumButton } from "./actionButtons/ToEnumButton.js";
-import { ToHypenateButton } from "./actionButtons/ToHypenateButton.js";
-import { ToLowerCaseButton } from "./actionButtons/ToLowerCaseButton.js";
-import { ToRemoveSpaceButton } from "./actionButtons/ToRemoveSpaceButton.js";
-import { ToUnderscoreButton } from "./actionButtons/ToUnderscoreButton.js";
-import { ToUpperCaseButton } from "./actionButtons/ToUpperCaseButton.js";
 import { MainWindow } from "./MainWindow.js";
+import { ActionButton } from "./ActionButton.js";
+import TextTransformer from "./TextTransformer.js";
 
 export class IActions extends Gtk.Revealer {
   win: MainWindow;
-  constructor(win: MainWindow) {
+  constructor(win: MainWindow, actions: ConfigAction[] = []) {
     super();
     this.win = win;
 
     this.set_halign(Gtk.Align.END);
 
-    this.set_child(this.#buildActions());
+    this.set_child(this.#buildActions(actions));
 
     this.set_transition_type(Gtk.RevealerTransitionType.SLIDE_RIGHT);
     this.set_transition_duration(500);
@@ -25,7 +21,7 @@ export class IActions extends Gtk.Revealer {
     this.connect("notify::child-revealed", this.onChildRevealed.bind(this));
   }
 
-  #buildActions() {
+  #buildActions(actions: ConfigAction[] = []) {
     const actionsWrapper = new Gtk.Box({
       orientation: Gtk.Orientation.VERTICAL,
     });
@@ -34,12 +30,18 @@ export class IActions extends Gtk.Revealer {
     actionsWrapper.set_margin_end(15);
     actionsWrapper.set_margin_start(15);
 
-    actionsWrapper.append(new ToUpperCaseButton(this.win));
-    actionsWrapper.append(new ToLowerCaseButton(this.win));
-    actionsWrapper.append(new ToUnderscoreButton(this.win));
-    actionsWrapper.append(new ToHypenateButton(this.win));
-    actionsWrapper.append(new ToEnumButton(this.win));
-    actionsWrapper.append(new ToRemoveSpaceButton(this.win));
+    actions.forEach((configAction) => {
+      const actbtn = new ActionButton({ label: configAction.label }, this.win);
+      const transformer = new TextTransformer();
+
+      actbtn.setActionCallback((content) => {
+        const output = transformer.transform(content, configAction);
+        console.debug("🚀 ~ file: ActionsSidebar.ts:45 ~ output:", output);
+        console.debug("action callback : content : ", content);
+        return output;
+      });
+      actionsWrapper.append(actbtn);
+    });
     return actionsWrapper;
   }
 

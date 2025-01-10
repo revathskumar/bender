@@ -4,10 +4,12 @@ import GObject from "gi://GObject";
 /** custom data element for a ListView model (Must be based on GObject) */
 export class IListElem extends GObject.Object {
   name = "";
+  label = "";
 
   constructor(name = "") {
     super();
     this.name = name;
+    this.label = name.substring(0, 80);
   }
 
   _repr() {
@@ -20,5 +22,5 @@ export const ListElem = GObject.registerClass(
     GTypeName: "ListElem",
     Implements: [Gio.ListModel],
   },
-  IListElem
+  IListElem,
 );

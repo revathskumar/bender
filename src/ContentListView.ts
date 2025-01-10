@@ -11,8 +11,11 @@ export class ListView extends Gtk.ListView {
   #selectedIndex: number = 0;
   #keyController: Gtk.EventControllerKey;
 
-  constructor(contentArray: string[] = [], searchFilter: ISearchFilter) {
-    super();
+  constructor(
+    config: Partial<Gtk.ListView.ConstructorProps> = {},
+    searchFilter: ISearchFilter,
+  ) {
+    super(config);
 
     this.factory = new Gtk.SignalListItemFactory();
     this.set_factory(this.factory);
@@ -37,16 +40,18 @@ export class ListView extends Gtk.ListView {
     this.set_valign(Gtk.Align.FILL);
     this.set_halign(Gtk.Align.FILL);
 
-    for (let index = 0; index < contentArray.length; index++) {
-      const element = contentArray[index];
-      this.add(new ListElem(element));
-    }
-
     this.set_model(this.model);
 
     // Create a Key Event Controller for the window
     this.#keyController = new Gtk.EventControllerKey();
     this.add_controller(this.#keyController);
+  }
+
+  addItems(contentArray: string[] = []) {
+    for (let index = 0; index < contentArray.length; index++) {
+      const element = contentArray[index];
+      this.add(new ListElem(element));
+    }
   }
 
   /**
@@ -94,7 +99,8 @@ export class ListView extends Gtk.ListView {
     // const _switch = label?.get_next_sibling() as Gtk.Switch;
     // Update Gtk.Label with data from model item
     // log(`facrotyBind : ${data.name}`);
-    label?.set_text(data.name || "");
+    label?.set_text(data.label || "");
+    label?.set_tooltip_text(data.name || "");
 
     item.set_child(box);
   }
@@ -113,6 +119,10 @@ export class ListView extends Gtk.ListView {
       return (this.model?.get_item(this.#selectedIndex) as IListElem)?.name;
     }
     return "";
+  }
+
+  getContent(index: number) {
+    return (this.model?.get_item(index) as IListElem)?.name || "";
   }
 
   setItemsChangedCallback(callback: (count: number) => void) {

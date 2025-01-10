@@ -4,18 +4,17 @@ import { MainWindow } from "./MainWindow.js";
 
 class IActionButton extends Gtk.Button {
   win: MainWindow;
-  constructor(win: MainWindow) {
-    super();
+  constructor(config: Partial<Gtk.Button.ConstructorProps>, win: MainWindow) {
+    super(config);
 
     this.win = win;
 
     this.set_margin_top(5);
     this.set_margin_bottom(5);
+  }
 
-    this.connect(
-      "clicked",
-      this.#handleOnClick.bind(this, this.handleButtonAction),
-    );
+  setActionCallback(callback: typeof this.handleButtonAction) {
+    this.connect("clicked", this.#handleOnClick.bind(this, callback));
   }
 
   handleButtonAction(content: string): string {
