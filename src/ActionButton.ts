@@ -1,6 +1,7 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import { MainWindow } from "./MainWindow.js";
+import OutputWriter from "./OutputWriter.js";
 
 class IActionButton extends Gtk.Button {
   win: MainWindow;
@@ -24,7 +25,8 @@ class IActionButton extends Gtk.Button {
   #handleOnClick(btnAction: typeof this.handleButtonAction) {
     const content = this.win.listView.getSelectedContent();
     if (content) {
-      print(btnAction(content.trim()));
+      const outWriter = new OutputWriter();
+      outWriter.write(btnAction(content.trim()));
     }
     this.win.close();
   }

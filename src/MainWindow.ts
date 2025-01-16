@@ -17,6 +17,7 @@ import {
   RIGHT_ARROW,
 } from "./constants/keyval.js";
 import Configuration from "./Configuration.js";
+import OutputWriter from "./OutputWriter.js";
 
 export class MainWindow extends Adw.ApplicationWindow {
   listView: ListView;
@@ -84,7 +85,12 @@ export class MainWindow extends Adw.ApplicationWindow {
           const index = keyval - 49;
           if (index >= 0 && index <= 8) {
             const content = this.listView.getContent(index);
-            print(content);
+            if (!content) {
+              return true;
+            }
+
+            const outWriter = new OutputWriter();
+            outWriter.write(content);
             this.close();
           }
           return true;
