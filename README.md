@@ -57,6 +57,8 @@ use pipe(`|`) to use mulitple actions
 * `UP/DOWN ARROWS` -
     * navigate through the list (when the actions sidebar is closed)
     * navigate through available actions (when actions sidebar is open with `RIGHT ARROW`)
+* `CTRL+<1-9>` : On list view
+  * print the item (based on position 1-9) to stdout
 
 ## Dev setup
 
@@ -107,6 +109,7 @@ echo -e "Hello\nBender" | flatpak run com.revathskumar.bender
 
 ## Credits
 
+Inspired by [Rofi](https://github.com/davatorium/rofi)
 Based on [gjsify/example-gtk4](https://github.com/gjsify/example-gtk4) by Pascal Garber
 
 ## License
