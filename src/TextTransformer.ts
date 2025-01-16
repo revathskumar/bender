@@ -8,6 +8,18 @@ class TextTransformer {
   replace(text: string, searchVal: string = "_", replaceVal: string = "") {
     return text.replaceAll(searchVal, replaceVal);
   }
+  onlyAlphanum(text: string) {
+    return text.replace(/[^0-9a-zA-Z]/g, "");
+  }
+  toHex(text: string) {
+    return new Number(text).toString(16);
+  }
+  removeDiacritics(text: string) {
+    return text.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+  }
+  reverse(text: string) {
+    return text.normalize("NFC").split("").toReversed().join("");
+  }
   transform(text: string, configAction: ConfigAction) {
     const actArr = configAction.action.split("|");
     let output = text;
@@ -18,6 +30,18 @@ class TextTransformer {
           break;
         case "lowercase":
           output = this.lowerCase(output);
+          break;
+        case "onlyalphanum":
+          output = this.onlyAlphanum(output);
+          break;
+        case "tohex":
+          output = this.toHex(output);
+          break;
+        case "removediacritics":
+          output = this.removeDiacritics(output);
+          break;
+        case "reverse":
+          output = this.reverse(output);
           break;
 
         default:

@@ -27,6 +27,10 @@ Available actions:
 * replace "<search_val>" "<replace_val>"
 * uppercase
 * lowercase
+* onlyAlphanum
+* toHex
+* reverse
+* removeDiacritics
 
 Add new entry for `actions`
 
