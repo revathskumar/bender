@@ -11,9 +11,7 @@ class TextTransformer {
   transform(text: string, configAction: ConfigAction) {
     const actArr = configAction.action.split("|");
     let output = text;
-    console.debug("🚀 ~ file: ActionsSidebar.ts:45 ~ output:", output);
     actArr.forEach((actItem) => {
-      console.debug("🚀 ~ file: ActionsSidebar.ts:46 ~ actItem:", actItem);
       switch (actItem.trim().toLowerCase()) {
         case "uppercase":
           output = this.upperCase(output);
@@ -31,15 +29,6 @@ class TextTransformer {
             const searchVal = match?.[1];
             const replaceVal = match?.[2];
 
-            console.debug("🚀 ~ file: ActionsSidebar.ts:59 ~ match:", match);
-            console.debug(
-              "🚀 ~ file: ActionsSidebar.ts:59 ~ replaceVal:",
-              replaceVal,
-            );
-            console.debug(
-              "🚀 ~ file: ActionsSidebar.ts:59 ~ searchVal:",
-              searchVal,
-            );
             output = this.replace(output, searchVal, replaceVal);
           }
           break;
