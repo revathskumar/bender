@@ -55,6 +55,26 @@ describe("TextTransformer", () => {
       });
     });
 
+    describe("extract text based on regexp pattern", () => {
+      it("when patten doesn't start with / & ends with /", () => {
+        expect(
+          transformer.transform("https://jira.com/browse/GP-8045", {
+            label: "extract jiraId",
+            action: 'extract "(GP-\\d{4})"',
+          }),
+        ).toBe("GP-8045");
+      });
+
+      it("when patten starts with / & ends with /", () => {
+        expect(
+          transformer.transform("https://jira.com/browse/GP-8045", {
+            label: "extract jiraId",
+            action: 'extract "/(GP-\\d{4})/"',
+          }),
+        ).toBe("GP-8045");
+      });
+    });
+
     describe("on multiple piped actions", () => {
       it("should be able to do replace and make it uppercase", () => {
         expect(

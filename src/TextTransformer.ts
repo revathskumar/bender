@@ -5,6 +5,13 @@ class TextTransformer {
   lowerCase(text: string) {
     return text.toLowerCase();
   }
+  extract(text: string, pattern: string) {
+    const result = text.match(new RegExp(pattern));
+    if (result?.[0]) {
+      return result[0];
+    }
+    return "";
+  }
   replace(text: string, searchVal: string = "_", replaceVal: string = "") {
     return text.replaceAll(searchVal, replaceVal);
   }
@@ -45,6 +52,16 @@ class TextTransformer {
           break;
 
         default:
+          if (actItem.trim().startsWith("extract")) {
+            const match = actItem.match(/extract [\"\'](.+)[\"\']/);
+
+            let pattern = match?.[1];
+
+            if (pattern) {
+              pattern = pattern.replace(/^\//, "").replace(/\/$/, "");
+              output = this.extract(output, pattern);
+            }
+          }
           if (actItem.trim().startsWith("replace")) {
             const match = actItem.match(
               /replace [\"\'](.+)[\"\'] [\"\'](.+|)[\"\']/,

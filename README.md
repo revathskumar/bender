@@ -31,6 +31,11 @@ Available actions:
 * toHex
 * reverse
 * removeDiacritics
+* extract "<regexp>"
+  NOTES:
+    * `'\'` in `\d`, `\s` extra should escaped like `\\s` or `\\d`
+    * Regexp flags are not supported
+
 
 Add new entry for `actions`
 
