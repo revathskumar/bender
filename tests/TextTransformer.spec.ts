@@ -85,6 +85,15 @@ describe("TextTransformer", () => {
         ).toBe("ABC");
       });
 
+      it("should be convert to enum", () => {
+        expect(
+          transformer.transform("HelloBender", {
+            label: "enum",
+            action: "snakecase | uppercase",
+          }),
+        ).toBe("HELLO_BENDER");
+      });
+
       it("should be able to do replace and make it to hex", () => {
         expect(
           transformer.transform("7 7 6", {

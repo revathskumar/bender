@@ -1,3 +1,5 @@
+import _snakecase from "lodash.snakecase";
+
 class TextTransformer {
   upperCase(text: string) {
     return text.toUpperCase();
@@ -27,6 +29,9 @@ class TextTransformer {
   reverse(text: string) {
     return text.normalize("NFC").split("").toReversed().join("");
   }
+  snakecase(text: string) {
+    return _snakecase(text);
+  }
   transform(text: string, configAction: ConfigAction) {
     const actArr = configAction.action.split("|");
     let output = text;
@@ -49,6 +54,9 @@ class TextTransformer {
           break;
         case "reverse":
           output = this.reverse(output);
+          break;
+        case "snakecase":
+          output = this.snakecase(output);
           break;
 
         default:

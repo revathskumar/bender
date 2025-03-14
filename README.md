@@ -27,6 +27,7 @@ Available actions:
 * replace "<search_val>" "<replace_val>"
 * uppercase
 * lowercase
+* snakecase
 * onlyAlphanum
 * toHex
 * reverse
@@ -49,7 +50,7 @@ use pipe(`|`) to use mulitple actions
 
 ```yaml
   - label: enum
-    action: replace " " "_" | uppercase
+    action: snakecase | uppercase
 ```
 
 ## Key bindings
