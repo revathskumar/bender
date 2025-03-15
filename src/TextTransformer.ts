@@ -1,4 +1,5 @@
 import _snakecase from "lodash.snakecase";
+import replaceNonBreakingSpace from "./utils/replaceNonBreakingSpace.js";
 
 class TextTransformer {
   upperCase(text: string) {
@@ -34,7 +35,7 @@ class TextTransformer {
   }
   transform(text: string, configAction: ConfigAction) {
     const actArr = configAction.action.split("|");
-    let output = text;
+    let output = replaceNonBreakingSpace(text);
     actArr.forEach((actItem) => {
       switch (actItem.trim().toLowerCase()) {
         case "uppercase":

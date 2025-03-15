@@ -18,6 +18,7 @@ import {
 } from "./constants/keyval.js";
 import Configuration from "./Configuration.js";
 import OutputWriter from "./OutputWriter.js";
+import replaceNonBreakingSpace from "./utils/replaceNonBreakingSpace.js";
 
 export class MainWindow extends Adw.ApplicationWindow {
   listView: ListView;
@@ -90,7 +91,7 @@ export class MainWindow extends Adw.ApplicationWindow {
             }
 
             const outWriter = new OutputWriter();
-            outWriter.write(content);
+            outWriter.write(replaceNonBreakingSpace(content));
             this.close();
           }
           return true;

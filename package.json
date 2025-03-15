@@ -34,6 +34,9 @@
     "lodash.snakecase": "^4.1.1"
   },
   "jest": {
+    "moduleNameMapper": {
+      "(.+)\\.js": "$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
