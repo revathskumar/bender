@@ -1,10 +1,11 @@
 import Gio from "gi://Gio";
+import GioUnix from "@girs/giounix-2.0";
 
 class OutputWriter {
   outputStream: Gio.DataOutputStream;
   constructor() {
     this.outputStream = new Gio.DataOutputStream({
-      baseStream: new Gio.UnixOutputStream({ fd: 1, closeFd: true }),
+      baseStream: new GioUnix.OutputStream({ fd: 1, closeFd: true }),
       closeBaseStream: true,
     });
   }
