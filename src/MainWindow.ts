@@ -83,8 +83,11 @@ export class MainWindow extends Adw.ApplicationWindow {
           `window key pressed : ${keyval}, ${keycode}, ${state}, ${Gdk.ModifierType.CONTROL_MASK}`,
         );
         if (state === Gdk.ModifierType.CONTROL_MASK) {
-          const index = keyval - 49;
-          if (index >= 0 && index <= 8) {
+          let index = keyval - 49;
+          if (index >= -1 && index <= 8) {
+            if (index === -1) {
+              index = 9;
+            }
             const content = this.listView.getContent(index);
             if (!content) {
               return true;
@@ -170,7 +173,6 @@ export class MainWindow extends Adw.ApplicationWindow {
           if (data) {
             str = new TextDecoder("utf-8").decode(data);
           }
-          console.debug("body:", str);
 
           let clipboardList = str.split("\n");
           clipboardList.splice(clipboardList.length - 1, 1);
