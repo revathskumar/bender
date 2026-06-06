@@ -10,12 +10,6 @@ import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
 import { Footer, IFooter } from "./Footer.js";
-import {
-  DOWN_ARROW,
-  ESCAPE,
-  LEFT_ARROW,
-  RIGHT_ARROW,
-} from "./constants/keyval.js";
 import Configuration from "./Configuration.js";
 import OutputWriter from "./OutputWriter.js";
 import replaceNonBreakingSpace from "./utils/replaceNonBreakingSpace.js";
@@ -100,23 +94,23 @@ export class MainWindow extends Adw.ApplicationWindow {
           return true;
         }
         if (!this.actionsSidebar?.get_child_revealed()) {
-          if (keyval === ESCAPE) {
+          if (keyval === Gdk.KEY_Escape) {
             this.close(); // Close the window
             return true; // Indicate the event is handled
           }
-          if (keyval === DOWN_ARROW) {
+          if (keyval === Gdk.KEY_Down) {
             // hack to bring focus to listview when window is presented
             this.listView.grab_focus();
             return true;
           }
         }
 
-        if (keyval === RIGHT_ARROW) {
+        if (keyval === Gdk.KEY_Right) {
           this.actionsSidebar?.show();
           return true;
         }
         if (
-          [LEFT_ARROW, ESCAPE].includes(keyval) &&
+          [Gdk.KEY_Left, Gdk.KEY_Escape].includes(keyval) &&
           this.actionsSidebar?.child_revealed
         ) {
           this.actionsSidebar?.hide();

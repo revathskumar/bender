@@ -1,9 +1,9 @@
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
+import Gdk from "gi://Gdk";
 
 import { IListElem, ListElem } from "./ListElem.js";
-import { RIGHT_ARROW } from "./constants/keyval.js";
 import { ISearchFilter } from "./SearchFilter.js";
 
 export class ListView extends Gtk.ListView {
@@ -172,7 +172,7 @@ export class ListView extends Gtk.ListView {
     keyval: number,
   ) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
-    if (keyval === RIGHT_ARROW && typeof callback === "function") {
+    if (keyval === Gdk.KEY_Right && typeof callback === "function") {
       callback();
       return true;
     }
