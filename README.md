@@ -120,4 +120,4 @@ Based on [gjsify/example-gtk4](https://github.com/gjsify/example-gtk4) by Pascal
 
 ## License
 
-[MIT](/LICENSE)
+GPL-3.0
