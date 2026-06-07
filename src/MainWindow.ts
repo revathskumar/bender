@@ -10,12 +10,6 @@ import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
 import { ISearchFilter, SearchFilter } from "./SearchFilter.js";
 import { Footer, IFooter } from "./Footer.js";
-import {
-  DOWN_ARROW,
-  ESCAPE,
-  LEFT_ARROW,
-  RIGHT_ARROW,
-} from "./constants/keyval.js";
 import Configuration from "./Configuration.js";
 import OutputWriter from "./OutputWriter.js";
 import replaceNonBreakingSpace from "./utils/replaceNonBreakingSpace.js";
@@ -83,8 +77,11 @@ export class MainWindow extends Adw.ApplicationWindow {
           `window key pressed : ${keyval}, ${keycode}, ${state}, ${Gdk.ModifierType.CONTROL_MASK}`,
         );
         if (state === Gdk.ModifierType.CONTROL_MASK) {
-          const index = keyval - 49;
-          if (index >= 0 && index <= 8) {
+          let index = keyval - 49;
+          if (index >= -1 && index <= 8) {
+            if (index === -1) {
+              index = 9;
+            }
             const content = this.listView.getContent(index);
             if (!content) {
               return true;
@@ -97,23 +94,23 @@ export class MainWindow extends Adw.ApplicationWindow {
           return true;
         }
         if (!this.actionsSidebar?.get_child_revealed()) {
-          if (keyval === ESCAPE) {
+          if (keyval === Gdk.KEY_Escape) {
             this.close(); // Close the window
             return true; // Indicate the event is handled
           }
-          if (keyval === DOWN_ARROW) {
+          if (keyval === Gdk.KEY_Down) {
             // hack to bring focus to listview when window is presented
             this.listView.grab_focus();
             return true;
           }
         }
 
-        if (keyval === RIGHT_ARROW) {
+        if (keyval === Gdk.KEY_Right) {
           this.actionsSidebar?.show();
           return true;
         }
         if (
-          [LEFT_ARROW, ESCAPE].includes(keyval) &&
+          [Gdk.KEY_Left, Gdk.KEY_Escape].includes(keyval) &&
           this.actionsSidebar?.child_revealed
         ) {
           this.actionsSidebar?.hide();
@@ -170,7 +167,6 @@ export class MainWindow extends Adw.ApplicationWindow {
           if (data) {
             str = new TextDecoder("utf-8").decode(data);
           }
-          console.debug("body:", str);
 
           let clipboardList = str.split("\n");
           clipboardList.splice(clipboardList.length - 1, 1);

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["@girs/gjs", "@girs/adw-1", "./index.d.ts"],
+    "types": ["@girs/gjs", "@girs/adw-1", "@girs/giounix-2.0", "./index.d.ts"],
     "lib": ["ES2024", "DOM"],
     "target": "ES2024",
     "module": "NodeNext",
@@ -9,6 +9,7 @@
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "noImplicitThis": true,
     "alwaysStrict": true
   },

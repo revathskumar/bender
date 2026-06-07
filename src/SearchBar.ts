@@ -1,5 +1,6 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
+import Gdk from "gi://Gdk";
 
 export class ISearchBar extends Gtk.SearchBar {
   #entry: Gtk.SearchEntry;
@@ -22,11 +23,36 @@ export class ISearchBar extends Gtk.SearchBar {
     this.connect_entry(this.#entry);
 
     // show close button in search bar
-    this.set_show_close_button(true);
+    this.set_show_close_button(false);
 
     // Set search mode to off by default
-    this.set_search_mode(false);
+    this.set_search_mode(true);
+
+    this.show();
+
+    const keyController = new Gtk.EventControllerKey();
+    keyController.connect("key-pressed", this.#handleKeyPress);
+
+    this.#entry.add_controller(keyController);
   }
+
+  #handleKeyPress = (_: Gtk.EventControllerKey, keyval: number) => {
+    if (keyval === Gdk.KEY_Escape) {
+      const text = this.#entry.get_text();
+
+      if (text.length > 0) {
+        this.#entry.set_text("");
+        return true;
+      }
+
+      const toplevel = this.get_native();
+      if (toplevel instanceof Gtk.Window) {
+        toplevel.close();
+      }
+      return true;
+    }
+    return false;
+  };
 
   setCapture(win: Gtk.Window) {
     this.set_key_capture_widget(win);

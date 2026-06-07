@@ -1,21 +1,24 @@
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
+import Gdk from "gi://Gdk";
 
 import { IListElem, ListElem } from "./ListElem.js";
-import { RIGHT_ARROW } from "./constants/keyval.js";
 import { ISearchFilter } from "./SearchFilter.js";
 
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
   #selectedIndex: number = 0;
   #keyController: Gtk.EventControllerKey;
+  #widgetMap: WeakMap<Gtk.Widget, { content: Gtk.Label; arrow: Gtk.Label }>;
 
   constructor(
     config: Partial<Gtk.ListView.ConstructorProps> = {},
     searchFilter: ISearchFilter,
   ) {
     super(config);
+
+    this.#widgetMap = new WeakMap();
 
     this.factory = new Gtk.SignalListItemFactory();
     this.set_factory(this.factory);
@@ -73,11 +76,15 @@ export class ListView extends Gtk.ListView {
     const label = new Gtk.Label();
     label.set_halign(Gtk.Align.START);
     label.set_hexpand(true);
+    label.set_single_line_mode(true);
     label.set_margin_start(10);
     const arrow = new Gtk.Label();
     arrow.set_halign(Gtk.Align.END);
     arrow.set_margin_end(10);
     arrow.set_text(" > ");
+
+    this.#widgetMap.set(box, { content: label, arrow });
+
     box.append(label);
     box.append(arrow);
   }
@@ -90,17 +97,26 @@ export class ListView extends Gtk.ListView {
    */
   factoryBind(widget: Gtk.ListView, item: Gtk.ListItem) {
     // get the Gtk.Box stored in the ListItem
-    const box = item.get_child();
+    const box = item.get_child() as Gtk.Widget;
     // get the model item, connected to current ListItem
     const data = item.get_item() as IListElem;
-    // get the Gtk.Label (first item in box)
-    const label = box?.get_first_child() as Gtk.Label;
-    // get the Gtk.Switch (next sibling to the Label)
-    // const _switch = label?.get_next_sibling() as Gtk.Switch;
-    // Update Gtk.Label with data from model item
-    // log(`facrotyBind : ${data.name}`);
-    label?.set_text(data.label || "");
-    label?.set_tooltip_text(data.name || "");
+    const index = item.get_position();
+
+    const widgetMap = this.#widgetMap.get(box);
+    if (!widgetMap) return;
+
+    const { content, arrow } = widgetMap;
+
+    if (index < 9) {
+      arrow.set_text(`CTRL+${index + 1}`);
+    } else if (index === 9) {
+      arrow.set_text(`CTRL+0`);
+    } else {
+      arrow.hide();
+    }
+
+    content?.set_text(data.label || "");
+    content?.set_tooltip_text(data.name || "");
 
     item.set_child(box);
   }
@@ -126,7 +142,7 @@ export class ListView extends Gtk.ListView {
   }
 
   setItemsChangedCallback(callback: (count: number) => void) {
-    this.model.connect(
+    this.model?.connect(
       "items-changed",
       this.#handleItemsChanged.bind(this, callback),
     );
@@ -140,12 +156,12 @@ export class ListView extends Gtk.ListView {
   }
 
   #handleItemsChanged(callback: (count: number) => void) {
-    const count = this.model.get_n_items();
-    console.debug(
-      "🚀 ~ file: ContentListView.ts:135 ~ handleItemsChanged ~ count:",
-      count,
-    );
-    if (typeof callback === "function") {
+    const count = this.model?.get_n_items();
+    // console.debug(
+    //   "🚀 ~ file: ContentListView.ts:135 ~ handleItemsChanged ~ count:",
+    //   count,
+    // );
+    if (typeof callback === "function" && count != undefined) {
       callback(count);
     }
   }
@@ -156,7 +172,7 @@ export class ListView extends Gtk.ListView {
     keyval: number,
   ) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
-    if (keyval === RIGHT_ARROW && typeof callback === "function") {
+    if (keyval === Gdk.KEY_Right && typeof callback === "function") {
       callback();
       return true;
     }

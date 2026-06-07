@@ -115,9 +115,9 @@ echo -e "Hello\nBender" | flatpak run com.revathskumar.bender
 
 ## Credits
 
-Inspired by [Rofi](https://github.com/davatorium/rofi)
+Inspired by [Rofi](https://github.com/davatorium/rofi)  
 Based on [gjsify/example-gtk4](https://github.com/gjsify/example-gtk4) by Pascal Garber
 
 ## License
 
-[MIT](/LICENSE)
+GPL-3.0
