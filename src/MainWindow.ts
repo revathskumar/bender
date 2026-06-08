@@ -5,6 +5,7 @@ import GObject from "gi://GObject";
 import GLib from "gi://GLib";
 import Gdk from "gi://Gdk";
 
+import { AboutDialog } from "./AboutDialog.js";
 import { ContentListView, ListView } from "./ContentListView.js";
 import { ActionsSidebar, IActions } from "./ActionsSidebar.js";
 import { ISearchBar, SearchBar } from "./SearchBar.js";
@@ -77,6 +78,11 @@ export class MainWindow extends Adw.ApplicationWindow {
           `window key pressed : ${keyval}, ${keycode}, ${state}, ${Gdk.ModifierType.CONTROL_MASK}`,
         );
         if (state === Gdk.ModifierType.CONTROL_MASK) {
+          if (keyval == Gdk.KEY_s) {
+            new AboutDialog();
+            return true;
+          }
+
           let index = keyval - 49;
           if (index >= -1 && index <= 8) {
             if (index === -1) {
