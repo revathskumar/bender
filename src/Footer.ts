@@ -1,6 +1,9 @@
+import Adw from "@girs/adw-1";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import pkg from "../package.json" with { type: "json" }; // requries ts module option set to esnext/nodenext
+
+import type { MainWindow } from "./MainWindow.js";
 
 export class IFooter extends Gtk.Box {
   #summaryLabel: Gtk.Label;
@@ -39,12 +42,29 @@ export class IFooter extends Gtk.Box {
   }
 
   #renderVersion() {
-    const vLabel = new Gtk.Label({
-      label: `${pkg.version}`,
+    const vBtn = new Gtk.LinkButton({
+      label: pkg.version,
     });
-    vLabel.set_halign(Gtk.Align.END);
+    vBtn.set_halign(Gtk.Align.END);
+    vBtn.connect("activate-link", () => {
+      const aboutOptions: Partial<Adw.AboutDialog.ConstructorProps> = {
+        applicationName: 'Bender',
+        applicationIcon: 'com.revathskumar.bender',
+        version: pkg.version,
+        developers: ['Revath S Kumar https://blog.revathskumar.com'],
+        website: 'https://codeberg.org/0x52534B/bender',
+        licenseType: Gtk.License.GPL_3_0,
+        copyright: '© 2024-present Revath S Kumar',
+        developerName: 'Revath S Kumar',
+        issueUrl: 'https://codeberg.org/0x52534B/bender/issues'
+      }
 
-    this.append(vLabel);
+      const aboutDialog = new Adw.AboutDialog(aboutOptions);
+      aboutDialog.present(this.get_native());
+      return true;
+    })
+
+    this.append(vBtn);
   }
 }
 
