@@ -15,6 +15,7 @@ export class ISearchBar extends Gtk.SearchBar {
     // Add SearchEntry
     this.#entry = new Gtk.SearchEntry();
     this.#entry.set_hexpand(true);
+    this.#entry.set_placeholder_text("Search / Filter...");
     box.append(this.#entry);
 
     this.set_child(box);
