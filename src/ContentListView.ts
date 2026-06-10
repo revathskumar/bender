@@ -6,6 +6,9 @@ import Gdk from "gi://Gdk";
 import { IListElem, ListElem } from "./ListElem.js";
 import { ISearchFilter } from "./SearchFilter.js";
 
+import OutputWriter from "./OutputWriter.js";
+import replaceNonBreakingSpace from "./utils/replaceNonBreakingSpace.js";
+
 export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
   #selectedIndex: number = 0;
@@ -39,6 +42,7 @@ export class ListView extends Gtk.ListView {
     });
 
     this.model.connect("selection-changed", this.selectionChanged.bind(this));
+    this.connect("activate", this.activateEvent.bind(this));
 
     this.set_valign(Gtk.Align.FILL);
     this.set_halign(Gtk.Align.FILL);
@@ -121,6 +125,22 @@ export class ListView extends Gtk.ListView {
     item.set_child(box);
   }
 
+  activateEvent(widget: Gtk.ListView, position: number) {
+    console.debug("ContentListView : activate ", position);
+
+    const content = this.getContent(position);
+    if (!content) {
+      return true;
+    }
+
+    const outWriter = new OutputWriter();
+    outWriter.write(replaceNonBreakingSpace(content));
+
+    const toplevel = this.get_native();
+    if (toplevel instanceof Gtk.Window) {
+      toplevel.close();
+    }
+  }
   selectionChanged(widget: Gtk.SelectionModel) {
     const selection = widget.get_selection();
     // the the first value in the GtkBitset, that contain the index of the selection in the data model
