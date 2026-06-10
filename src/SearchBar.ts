@@ -1,6 +1,7 @@
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import Gdk from "gi://Gdk";
+import { MainWindow } from "./MainWindow.js";
 
 export class ISearchBar extends Gtk.SearchBar {
   #entry: Gtk.SearchEntry;
@@ -35,6 +36,20 @@ export class ISearchBar extends Gtk.SearchBar {
     keyController.connect("key-pressed", this.#handleKeyPress);
 
     this.#entry.add_controller(keyController);
+    this.#entry.connect("activate", this.#handleActivate);
+  }
+
+  #handleActivate = (widget: Gtk.SearchEntry) => {
+    console.debug("SearchEntry : activate : ");
+
+    const toplevel = this.get_native();
+    if (toplevel instanceof MainWindow) {
+      const item = toplevel.listView.model?.get_item(0)
+      if (item !== null) {
+        toplevel.listView.emit('activate', [0]);
+        toplevel.close();
+      }
+    }
   }
 
   #handleKeyPress = (_: Gtk.EventControllerKey, keyval: number) => {
