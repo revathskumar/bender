@@ -2,6 +2,7 @@ node_modules
 dist/index.js
 @types/
 builddir/
+build/
 .flatpak-builder/
 repo/
 run/
