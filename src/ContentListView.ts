@@ -192,7 +192,9 @@ export class ListView extends Gtk.ListView {
     keyval: number,
   ) {
     console.debug("🚀 ~ file: ContentListView.ts:58 ~ keyval:", keyval);
-    if (keyval === Gdk.KEY_Right && typeof callback === "function") {
+    const item = this.model?.get_item(0)
+
+    if (keyval === Gdk.KEY_Right && typeof callback === "function" && item !== null) {
       callback();
       return true;
     }
