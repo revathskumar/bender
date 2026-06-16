@@ -3,8 +3,6 @@ import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import pkg from "../package.json" with { type: "json" }; // requries ts module option set to esnext/nodenext
 
-import type { MainWindow } from "./MainWindow.js";
-
 export class IFooter extends Gtk.Box {
   #summaryLabel: Gtk.Label;
   constructor(config: Partial<Gtk.Box.ConstructorProps> = {}) {

@@ -181,7 +181,7 @@ export class ListView extends Gtk.ListView {
     //   "🚀 ~ file: ContentListView.ts:135 ~ handleItemsChanged ~ count:",
     //   count,
     // );
-    if (typeof callback === "function" && count != undefined) {
+    if (typeof callback === "function" && count !== undefined) {
       callback(count);
     }
   }
