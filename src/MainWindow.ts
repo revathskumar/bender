@@ -23,6 +23,7 @@ export class MainWindow extends Adw.ApplicationWindow {
   searchFilter: ISearchFilter;
   footer: IFooter;
   totalItemsCount: number = 0;
+  viewStack: Adw.ViewStack;
 
   constructor(config: Partial<Adw.ApplicationWindow.ConstructorProps>) {
     const title = config?.title || "";
@@ -55,7 +56,18 @@ export class MainWindow extends Adw.ApplicationWindow {
     this.sw.set_vexpand(true);
     this.sw.set_child(this.listView);
 
-    content.append(this.sw);
+    let emptyStatus = new Adw.StatusPage({
+      iconName: "system-search",
+      title: "No results found",
+      description: "Try resetting your search/filter."
+    });
+
+    this.viewStack = new Adw.ViewStack();
+    this.viewStack.add_named(this.sw, "list");
+    this.viewStack.add_named(emptyStatus, "empty_status");
+    this.viewStack.set_visible_child_name("list");
+
+    content.append(this.viewStack);
 
     this.wrapper.append(content);
 
@@ -147,7 +159,7 @@ export class MainWindow extends Adw.ApplicationWindow {
       outputStream.splice_async(
         inputStream,
         Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
-          Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+        Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
         GLib.PRIORITY_DEFAULT,
         null,
         (outputStream, result) => {
@@ -190,6 +202,11 @@ export class MainWindow extends Adw.ApplicationWindow {
 
   #handleItemsChanged(count: number) {
     this.footer.updateSummaryLabel(count, this.totalItemsCount);
+    if (count === 0) {
+      this.viewStack.set_visible_child_name("empty_status");
+      return;
+    }
+    this.viewStack.set_visible_child_name("list");
   }
 
   #handleKeyPress() {
