@@ -116,11 +116,6 @@ export class MainWindow extends Adw.ApplicationWindow {
             return true;
           }
         }
-
-        if (keyval === Gdk.KEY_Right) {
-          this.actionsSidebar?.show();
-          return true;
-        }
         if (
           [Gdk.KEY_Left, Gdk.KEY_Escape].includes(keyval) &&
           this.actionsSidebar?.child_revealed
