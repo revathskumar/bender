@@ -113,6 +113,17 @@ flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --i
 echo -e "Hello\nBender" | flatpak run com.revathskumar.bender
 ```
 
+### Flatpak Permission
+
+```sh
+flatpak override --user --filesystem=xdg-config/bender com.revathskumar.bender
+
+flatpak override --user --show com.revathskumar.bender
+
+# reset the permission
+flatpak override --user --reset com.revathskumar.bender
+```
+
 ## Credits
 
 Inspired by [Rofi](https://github.com/davatorium/rofi)  
