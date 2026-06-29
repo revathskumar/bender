@@ -1,0 +1,9 @@
+shortcut-label .keycap {
+  background-color: alpha(@theme_bg_color, 0.9);
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin: 0 0.1em;
+  color: @theme_fg_color;
+  font-weight: 600;
+}
+

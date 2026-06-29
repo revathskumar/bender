@@ -12,6 +12,7 @@ class _Application extends Adw.Application {
     },
   ) {
     super(constructProperties);
+    this.set_resource_base_path(`${this.get_resource_base_path()}/js`)
   }
 
   override vfunc_activate() {

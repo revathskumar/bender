@@ -1,3 +1,4 @@
+import Adw from "@girs/adw-1";
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
@@ -13,7 +14,7 @@ export class ListView extends Gtk.ListView {
   store: Gio.ListStore<IListElem>;
   #selectedIndex: number = 0;
   #keyController: Gtk.EventControllerKey;
-  #widgetMap: WeakMap<Gtk.Widget, { content: Gtk.Label; arrow: Gtk.Label }>;
+  #widgetMap: WeakMap<Gtk.Widget, { content: Gtk.Label; shortcut: Adw.ShortcutLabel }>;
 
   constructor(
     config: Partial<Gtk.ListView.ConstructorProps> = {},
@@ -82,15 +83,15 @@ export class ListView extends Gtk.ListView {
     label.set_hexpand(true);
     label.set_single_line_mode(true);
     label.set_margin_start(10);
-    const arrow = new Gtk.Label();
-    arrow.set_halign(Gtk.Align.END);
-    arrow.set_margin_end(10);
-    arrow.set_text(" > ");
+    const shortcut = new Adw.ShortcutLabel();
 
-    this.#widgetMap.set(box, { content: label, arrow });
+    shortcut.set_halign(Gtk.Align.END);
+    shortcut.set_margin_end(10);
+
+    this.#widgetMap.set(box, { content: label, shortcut });
 
     box.append(label);
-    box.append(arrow);
+    box.append(shortcut);
   }
 
   /**
@@ -101,22 +102,24 @@ export class ListView extends Gtk.ListView {
    */
   factoryBind(widget: Gtk.ListView, item: Gtk.ListItem) {
     // get the Gtk.Box stored in the ListItem
-    const box = item.get_child() as Gtk.Widget;
+    const box = item.get_child() as Gtk.Box;
     // get the model item, connected to current ListItem
     const data = item.get_item() as IListElem;
     const index = item.get_position();
 
     const widgetMap = this.#widgetMap.get(box);
-    if (!widgetMap) return;
+    if (!widgetMap) {
+      console.debug("no WeakMap");
+      return;
+    }
 
-    const { content, arrow } = widgetMap;
+    const { content, shortcut } = widgetMap;
 
     if (index < 9) {
-      arrow.set_text(`CTRL+${index + 1}`);
+      shortcut.set_accelerator(`<Control>${index + 1}`)
     } else if (index === 9) {
-      arrow.set_text(`CTRL+0`);
-    } else {
-      arrow.hide();
+
+      shortcut.set_accelerator(`<Control>0`)
     }
 
     content?.set_text(data.label || "");
