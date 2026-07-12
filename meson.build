@@ -15,6 +15,20 @@ gnome = import('gnome')
 subdir('data')
 subdir('dist')
 
+
+npm_bin = find_program('npm')
+
+npm_build = custom_target('npm_build',
+  build_by_default: true,
+  build_always_stale: true,
+  output: meson.project_name(),
+  command: [
+    npm_bin, 'install',
+    '&&',
+    npm_bin, 'run', 'build'
+  ]
+)
+
 # Post installation tasks
 # gnome.post_install(
 #   gtk_update_icon_cache: true,

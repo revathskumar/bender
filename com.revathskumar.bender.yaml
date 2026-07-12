@@ -27,9 +27,6 @@ modules:
     buildsystem: meson
     build-options:
       append-path: "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
-    build-commands:
-      - npm i
-      - npm run build
     config-opts:
       - --buildtype=release
     sources:
