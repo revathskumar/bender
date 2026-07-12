@@ -3,6 +3,7 @@ import Gio from "gi://Gio";
 import Gtk from "gi://Gtk?version=4.0";
 import GObject from "gi://GObject";
 import Gdk from "gi://Gdk";
+import Pango from "gi://Pango?version=1.0";
 
 import { IListElem, ListElem } from "./ListElem.js";
 import { ISearchFilter } from "./SearchFilter.js";
@@ -78,13 +79,24 @@ export class ListView extends Gtk.ListView {
     const box = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
 
     item.set_child(box);
-    const label = new Gtk.Label();
-    label.set_halign(Gtk.Align.START);
-    label.set_hexpand(true);
-    label.set_single_line_mode(true);
-    label.set_margin_start(10);
-    const shortcut = new Adw.ShortcutLabel();
 
+    const label = new Gtk.Label({
+      xalign: 0,
+      halign: Gtk.Align.START,
+      hexpand: true,
+      ellipsize: Pango.EllipsizeMode.END,
+      singleLineMode: true,
+      marginStart: 10,
+      maxWidthChars: 100,
+      wrap: false,
+    });
+    // label.set_halign(Gtk.Align.START);
+    // label.set_hexpand(false);
+    // // label.set_ellipsize(Pango)
+    // label.set_single_line_mode(true);
+    // label.set_margin_start(10);
+
+    const shortcut = new Adw.ShortcutLabel();
     shortcut.set_halign(Gtk.Align.END);
     shortcut.set_margin_end(10);
 
