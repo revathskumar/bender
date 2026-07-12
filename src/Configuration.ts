@@ -1,7 +1,7 @@
 import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 
-import YAML from "js-yaml";
+import * as YAML from "js-yaml";
 
 Gio._promisify(Gio.File.prototype, "load_contents_async");
 
