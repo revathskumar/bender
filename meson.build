@@ -8,14 +8,6 @@ project(
 
 APP_ID = 'com.revathskumar.bender'
 
-# Import the modules
-gnome = import('gnome')
-
-# Load instructions from subdirectories
-subdir('data')
-subdir('dist')
-
-
 npm_bin = find_program('npm')
 
 npm_build = custom_target('npm_build',
@@ -28,6 +20,13 @@ npm_build = custom_target('npm_build',
     npm_bin, 'run', 'build'
   ]
 )
+
+# Import the modules
+gnome = import('gnome')
+
+# Load instructions from subdirectories
+subdir('data')
+subdir('dist')
 
 # Post installation tasks
 # gnome.post_install(
